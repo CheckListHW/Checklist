@@ -1,0 +1,66 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head xmlns="http://www.w3.org/1999/html">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Editor/icons/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/anim/animate.min.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/css/RisksStage.css" %}">
+</head>
+   <div class="main_body">
+        <div class="wrapper" id="etap">
+            <div class="title">
+                <h1>Название этапа: {{Name}}</h1>
+            </div>
+            <hr>
+{% verbatim %}
+            <div class="content">
+                <div class="hint">
+                    <p><i class="fa fa-info-circle"></i> Впечатайте ниже пункты проверки перед началом выполнения этапа</p>
+                </div>
+
+                <div class="input_form">
+                    <div class="message" v-if="message_visible">
+                        <p>Сообщение лаборанту: {{message}}</p>
+                        <button class="btn btn-warning edit_btn" @click="message_visible = !message_visible"><i class="fa fa-pencil"></i></button>
+                    </div>
+                    <textarea v-if="!message_visible" @keyup.enter="message_visible = !message_visible" type="text" placeholder="Введите сообщение, которое увидит работник перед началом выполнения данного этапа и нажмите Enter" v-model="message" class="form-control"></textarea>
+                </div>
+
+                <div class="tasks_form">
+                    <h2>Список пунктов</h2>
+
+                    <div class="tasks_list">
+                        <div class="task" v-for="(task, index) in tasks">
+                            <div class="name">{{index + 1}}. {{task}}</div>
+                            <button class="btn btn-danger" @click="delete_item(tasks, index)"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+
+                    <input type="text" placeholder="Введите пункт и нажмите Enter" @keyup.enter="add_new(tasks)" v-model="input_value" class="form-control">
+                </div>
+            </div>
+{% endverbatim %}
+            <div class="footer_bar">
+                <form method="post" action="/stages/" >
+                        <input type="submit" class="btn btn-outline-info" value="Вернуться к списку этапов" @click=finish(tasks)>
+                        <input type="hidden" name="Name" value="{{ Name }}">
+                        <input type="hidden" name="Number" value={{ Number }}>
+                        <input type="hidden" name="Experiment" value={{ Experiment }}>
+                        <input type="hidden" name="Stage" value={{ Stage }}>
+                </form>
+                <form method="post" action="/stages/sub/">
+                        <input type="submit" class="btn btn-outline-info" value="Продолжить редактировать &#x21D2" @click=finish(tasks)>
+                        <input type="hidden" name="Name" value="{{ Name }}">
+                        <input type="hidden" name="Number" value={{ Number }}>
+                        <input type="hidden" name="Experiment" value={{ Experiment }}>
+                        <input type="hidden" name="Stage" value={{ Stage }}>
+                </form>
+                </div>
+        </div>
+    </div>
+{{ Experiment|json_script:"Experiment" }}
+{{ Stage|json_script:"Stage" }}
+{% load static %}
+<script src="{% static "Editor/js/RisksStage.js" %} "></script>
+{% endblock %}

@@ -1,0 +1,6 @@
+/venv/
+venv/*
+.idea/*
+/frontend/media/
+*.xml
+*.jpg

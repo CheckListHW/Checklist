@@ -1,0 +1,166 @@
+body {
+    margin: 0;
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+
+    background-color: #eee;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+/* Scrollbar ===============*/
+
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 8px;
+    background-color: #A647A6;
+
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+
+    border-radius: 4px;
+}
+
+/* Change Bootstrap ===============*/
+
+.btn-outline-info {
+    border-color: #359C8E;
+    color: #359C8E;
+}
+
+.btn-outline-info:hover,
+.btn-outline-info:focus,
+.btn-outline-info:visited {
+    background-color: #359C8E;
+    border-color: #359C8E;
+    color: white;
+}
+
+.btn-info {
+    background-color: #359C8E;
+    border-color: #359C8E;
+    color: white;
+}
+
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:visited {
+    background-color: #2B8478;
+}
+
+/* Container ===============*/
+
+.container {
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+
+/* Main Body ===============*/
+
+.main_body {
+    display: flex;
+    justify-content: center;
+    max-height: 100vh;
+    margin: 10px 0;
+}
+
+#experiments {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 30px;
+}
+
+/* List of Experiments ===============*/
+
+.experiments_btn {
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+}
+
+.experiment {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.experiment_btn {
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hidden {
+    display: none;
+    position: absolute;
+    left: 110%;
+    bottom: 17%;
+    background-color: #fff;
+    color: #359C8E;
+    white-space: nowrap;
+    padding: 5px;
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(0,0,0,.16);
+    font-size: 13px;
+}
+
+.experiment_btn:hover + .hidden {
+    display: inline-block;
+}
+
+/* Creating Form ===============*/
+
+.creating_experiment {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.creating_experiment > button {
+    margin-left: 5px;
+}
+
+.creating_experiment > input {
+    width: 300px;
+    margin-left: 5px;
+}
+
+.create_btn {
+    margin-bottom: 20px;
+}
+
+.auth_form{
+    width: 200px;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.title h1 {
+    font-size: 30px;
+    margin: 0;
+    font-family: Arial;
+}

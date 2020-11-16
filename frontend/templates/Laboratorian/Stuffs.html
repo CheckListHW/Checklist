@@ -1,0 +1,107 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Laboratorian/css/Stuffs.css" %}">
+</head>
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etaps" onload="myFunc()">
+            <div class="title">
+                <h1>Этап: {{ExeStageName}}</h1>
+            </div>
+{% verbatim %}
+            <hr>
+
+            <div class="content">
+                <div class="hint">
+                    <p><i class="fa fa-info-circle"></i>Проверить наличие и готовность документов, материалов и оборудования и т.д.</p>
+                </div>
+
+                <div class="content_checklist">
+                    <div class="content_item" v-if="!is_null(equipments)">
+                        <div class="item_title">Оборудование</div>
+
+                        <hr>
+
+                        <div class="list">
+                            <div class="item" v-for="(equipment, index) in equipments">
+                                <div class="name">{{index + 1}}. {{equipment.Name}}</div>
+                                <input type="checkbox" class="item_input" v-model="equipments_check[index]"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content_item" v-if="!is_null(dishes)">
+                        <div class="item_title">Посуда</div>
+
+                        <hr>
+
+                        <div class="list">
+                            <div class="item" v-for="(dishe, index) in dishes">
+                                <div class="name">{{index + 1}}. {{dishe.Name}}</div>
+                                <input type="checkbox" class="item_input" v-model="dishes_check[index]"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content_item" v-if="!is_null(reagents)">
+                        <div class="item_title">Реагенты</div>
+
+                        <hr>
+
+                        <div class="list">
+                            <div class="item" v-for="(reagent, index) in reagents">
+                                <div class="name">{{index + 1}}. {{reagent.Name}}</div>
+                                <input type="checkbox" class="item_input" v-model="reagents_check[index]"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content_item" v-if="!is_null(documents)">
+                        <div class="item_title">Документы</div>
+
+                        <hr>
+
+                        <div class="list">
+                            <div class="item" v-for="(document, index) in documents">
+                                <div class="name">{{index + 1}}. {{document.Name}}</div>
+                                <input type="checkbox" class="item_input" v-model="documents_check[index]"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content_item" v-if="!is_null(sizs)">
+                        <div class="item_title">СИЗы</div>
+
+                        <hr>
+
+                        <div class="list">
+                            <div class="item" v-for="(siz, index) in sizs">
+                                <div class="name">{{index + 1}}. {{siz.Name}}</div>
+                                <input type="checkbox" class="item_input" v-model="sizs_check[index]"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer_bar">
+                    {% endverbatim %}
+                    <form method="post" action="/lab/stages/">
+                        <button class="btn btn-info btn_green">Вернуться назад</button>
+                        <input type="hidden" name="Sample" value={{ Sample }}>
+                    </form>
+                    <button class="btn btn-info btn_green" @click="Preparatory()" :disabled="!control_check">Далее</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        {{ ExeStageName|json_script:"ExeStageName" }}
+        {{ Stage|json_script:"Stage" }}
+        {{ ExeStage|json_script:"ExeStage" }}
+        {{ ExeExperiment|json_script:"ExeExperiment" }}
+        {{ SampleName|json_script:"SampleName" }}
+{% load static %}
+<script src="{% static "Laboratorian/js/Stuffs.js" %} "></script>
+{% endblock %}

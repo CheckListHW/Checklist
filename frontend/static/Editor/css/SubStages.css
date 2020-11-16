@@ -1,0 +1,1589 @@
+body {
+    margin: 0;
+    height: 100%;
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+
+    background-color: #eee;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+button.active.focus,
+button.active:focus,
+button.focus,
+button:active.focus,
+button:active:focus,
+button:focus,
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn:active:focus,
+.btn:focus {
+    outline: 0!important;
+    outline-color: transparent!important;
+    outline-width: 0!important;
+    outline-style: none!important;
+    box-shadow: 0 0 0 0 rgba(0,123,255,0)!important;
+}
+
+p {
+    margin: 0;
+}
+
+/* Scrollbar ===============*/
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background-color: #eee;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 0px;
+    height: 0px;
+    background-color: #55a0ff;
+
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #eee;
+
+    border-radius: 3px;
+}
+
+/* Change Bootstrap ===============*/
+
+.btn-outline-info {
+    border-color: #55a0ff;
+    color: #55a0ff;
+}
+
+.btn-outline-info:hover,
+.btn-outline-info:focus,
+.btn-outline-info:visited {
+    background-color: #55a0ff;
+    border-color: #55a0ff;
+    color: white;
+}
+
+.btn-info {
+    background-color: #55a0ff;
+    border-color: #55a0ff;
+    color: white;
+}
+
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:visited {
+    background-color: #0068f0;
+    border-color: #0068f0;
+}
+
+.btn-info:disabled {
+    background-color: #75c1ff;
+    border-color: #75c1ff;
+}
+
+.btn-info:disabled:hover,
+.btn-info:disabled:focus,
+.btn-info:disabled:visited {
+    background-color: #75c1ff;
+    border-color: #75c1ff;
+}
+
+.btn_green {
+    background-color: #13cf99;
+    border-color: #13cf99;
+    color: white;
+}
+
+.btn_green:hover,
+.btn_green:focus,
+.btn_green:visited {
+    background-color: #0e9e75;
+    border-color: #0e9e75;
+}
+
+.btn_green:disabled {
+    background-color: #28ebb3;
+    border-color: #28ebb3;
+    color: white;
+}
+
+.btn_green:disabled:hover,
+.btn_green:disabled:focus,
+.btn_green:disabled:visited {
+    background-color: #28ebb3;
+    border-color: #28ebb3;
+}
+
+/* Container ===============*/
+
+.container {
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header ===============*/
+
+.header {
+    background-color: #55a0ff;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    top: 0;
+    left: 0;
+
+    box-shadow: 0 0 7px;
+}
+
+.header__inner {
+    display: flex;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Navigator ===============*/
+
+.nav {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.nav__link {
+    margin-left: 20px;
+    color: #000;
+    text-decoration: none;
+    opacity: 0.75;
+
+    transition: opacity 0.1s linear;
+}
+
+.nav__link:nth-child(2) {
+    margin-left: 5px;
+}
+
+.nav__link:hover {
+    color: #000;
+    text-decoration: none;
+    opacity: 1;
+}
+
+/* User ===============*/
+
+.user {
+    display: flex;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.user_link {
+    color: #000;
+    text-decoration: none;
+    opacity: 0.75;
+
+    transition: opacity 0.1s linear;
+}
+
+.user_link:hover {
+    color: #000;
+    text-decoration: none;
+    opacity: 1;
+}
+
+/* Main Body ===============*/
+
+.main_body {
+    width: 100%;
+}
+
+.wrapper_expand {
+    height: calc(100vh - 120px);
+    max-height: calc(100vh - 120px);
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+    margin-bottom: 20px;
+
+    overflow-y: auto;
+
+    display: flex;
+    justify-content: center;
+}
+
+/* Experiment ===============*/
+
+.experiment {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* Main Title ===============*/
+
+.main_title {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.main_title button {
+    margin-right: 5px;
+}
+
+.main_title button:last-child {
+    margin-right: 0;
+}
+
+.edit_btn {
+    width: 30px;
+    height: 30px;
+
+    text-align: center;
+    font-size: 12px;
+
+    padding: 0;
+}
+
+/* Variants ===============*/
+
+.variants {
+    display: flex;
+
+    width: 100%;
+    max-width: 1200px;
+
+    overflow-x: auto;
+}
+
+.variant:last-child {
+    margin: 0 auto;
+}
+
+.variant {
+    display: flex;
+    flex-direction: column;
+
+    margin: 0 15px auto;
+    padding: 5px 0;
+}
+
+/* PodetapsBar ===============*/
+
+.podetaps_bar {
+    display: flex;
+    flex-direction: column;
+}
+
+.podetap_form {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 10px;
+}
+
+.podetap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    margin-bottom: 5px;
+}
+
+.podetap_btn_fix_size {
+    width: 240px;
+    font-size: 12px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    padding: 5px 10px;
+
+    margin-right: 5px;
+}
+
+.podetap_create_btn {
+    width: 250px;
+    font-size: 12px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    padding: 5px 10px;
+}
+
+.podetap p {
+    margin-right: 7px;
+}
+
+/* Podetaps_Variants ===============*/
+
+.podetaps_variants {
+    display: flex;
+    margin: auto;
+}
+
+.podetaps_variant {
+    display: flex;
+    flex-direction: column;
+
+    margin-right: 10px;
+    padding: 5px 0;
+}
+
+.podetaps_variant:last-child {
+    margin-right: 0px;
+}
+
+.pod_podetaps_bar {
+    display: flex;
+    flex-direction: column;
+}
+
+.podetap_of_podetap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 5px;
+}
+
+.podetap_of_podetap p {
+    font-size: 12px;
+    margin-right: 7px;
+}
+
+.pod_podetap_btn_fix_size {
+    width: 180px;
+    font-size: 12px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    padding: 5px 10px;
+}
+
+.pod_podetap_create_btn {
+    width: 240px;
+    font-size: 12px;
+    line-height: 12px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    padding: 5px 10px;
+}
+
+/* Create Button ===============*/
+
+.create_btn {
+    display: flex;
+    justify-content: center;
+}
+
+/* Settings ===============*/
+
+.popup_window {
+    background: rgba(102, 102, 102, 0.6); /*Попробовать светлее/темнее*/
+    width: 100%;
+    height: calc(100vh - 40px);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.window_form {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+
+    max-height: calc(100vh - 110px);
+
+    overflow: auto;
+
+    margin-bottom: -40px;
+    padding: 15px;
+
+    border: 1px solid;
+    border-radius: 5px;
+
+    background: rgba(255, 255, 255, 0.7);
+}
+
+/* Conditions ===============*/
+
+.small_window_form {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+
+    overflow: auto;
+
+    margin-bottom: -40px;
+    padding: 15px;
+
+    border: 1px solid;
+    border-radius: 5px;
+
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.condition_main_title {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.condition_main_title h2 {
+    font-size: 14px;
+}
+
+.condition_inner_container {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
+.condition_form {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.condition_title {
+    display: flex;
+    align-items: center;
+
+    flex: 0 0 30%;
+
+    min-width: 95px;
+
+    margin-right: 5px;
+}
+
+.condition_title p {
+    font-size: 12px;
+}
+
+.condition_input {
+    display: flex;
+    flex: 0 0 70%;
+
+    min-width: 200px;
+}
+
+.condition_input input {
+    font-size: 12px;
+}
+
+.condition_form:last-child {
+    margin-bottom: 50px;
+}
+
+/* Settings ===============*/
+
+.title_inner h2 {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.inner__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    width: 100%;
+    max-width: 1200px;
+
+    padding: 0 20px;
+}
+
+.short_collumn {
+    display: flex;
+    flex-direction: column;
+
+    flex: 0 0 40%;
+    min-width: 315px;
+
+    margin-right: 20px;
+}
+
+.long_collumn {
+    display: flex;
+    flex-direction: column;
+
+    flex: 0 0 60%;
+    min-width: 700px;
+}
+
+/* Footer Inner ===============*/
+
+.footer_bar_inner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    max-width: 1200px;
+
+    transform: translateX(-50%);
+    margin-left: 50%;
+    overflow: hidden;
+
+    margin-bottom: 15px;
+    margin-top: 20px;
+    padding: 0 15px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.footer_bar_inner > button {
+    font-size: 14px;
+    margin-right: 15px;
+}
+
+/* Etap Info ===============*/
+
+.etap_info {
+    margin-bottom: 20px;
+}
+
+.name_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin-bottom: 7px;
+}
+
+.name_form > h3 {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.name_form > textarea {
+    padding: 6px 8px;
+    height: 50px;
+    max-height: 50px;
+    min-height: 50px;
+
+    font-size: 12px;
+}
+
+/* Collumn Titles ===============*/
+
+.collumn_titles {
+    display: flex;
+}
+
+.null {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    min-width: 260px;
+    margin-right: 5px;
+}
+
+.equipm_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    min-width: 190px;
+    margin-right: 5px;
+
+    padding: 0 10px;
+    font-size: 12px;
+}
+
+.value_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    min-width: 80px;
+    margin-right: 5px;
+
+    padding: 0 10px;
+    font-size: 12px;
+}
+
+.meassure_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    min-width: 80px;
+    margin-right: 5px;
+
+    padding: 0 10px;
+    font-size: 12px;
+}
+
+.edit_btns_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 61px;
+    margin-right: 5px;
+}
+
+/* Computing Collumn Titles ===============*/
+
+.collumn_titles {
+    display: flex;
+}
+
+.computing_null {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    min-width: 290px;
+    margin-right: 5px;
+}
+
+.computing_value_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    min-width: 80px;
+    margin-right: 5px;
+
+    padding: 0 10px;
+    font-size: 12px;
+}
+
+.computing_meassure_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    min-width: 80px;
+    margin-right: 5px;
+
+    padding: 0 10px;
+    font-size: 12px;
+}
+
+/* Parametrs ===============*/
+
+.parametrs {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 20px;
+}
+
+.parametrs:last-child {
+    margin-bottom: 0px;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.title h3 {
+    font-size: 14px;
+    margin: 0;
+}
+
+
+
+.params_content {
+    overflow-y: auto;
+}
+
+.params_list {
+    display: flex;
+    flex-direction: column;
+}
+
+.params {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 10px;
+}
+
+.params_row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 2px;
+}
+
+.period_mess p {
+    font-size: 10px;
+}
+
+.name {
+    display: flex;
+    align-items: center;
+
+    flex: 1;
+
+    min-height: 38px;
+    min-width: 260px;
+
+    padding: 0 10px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    background-color: #55a0ff;
+    border-radius: 5px;
+}
+
+.equipm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    min-height: 38px;
+    min-width: 190px;
+
+    padding: 0 10px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.equipm p {
+    text-align: center;
+}
+
+.value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    height: 38px;
+    min-width: 80px;
+
+    padding: 0 10px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    overflow: hidden;
+
+    border-radius: 5px;
+}
+
+.value p {
+    text-align: center;
+}
+
+.meassure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    height: 38px;
+    min-width: 80px;
+
+    padding: 0 10px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    text-align: center;
+    overflow: hidden;
+
+    border-radius: 5px;
+}
+
+.meassure p {
+    text-align: center;
+}
+
+.edit_btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.edit_btn {
+    width: 28px;
+    height: 28px;
+
+    margin-right: 5px;
+}
+
+.edit_btn:last-child {
+    margin-right: 0;
+}
+
+/* Parametrs Form ===============*/
+
+.parametrs_form {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 10px;
+
+    padding: 8px;
+    margin-right: 5px;
+
+    border-radius: 5px;
+    box-shadow: 3px 3px 4px 2px rgba(0,0,0,0.3);
+    background-color: #ddd;
+}
+
+.save {
+    font-size: 12px;
+
+    margin-right: 10px;
+}
+
+.save:last-child {
+    margin-right: 0;
+}
+
+.button_add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-right: 5px;
+}
+
+.button_add button {
+    font-size: 12px;
+}
+
+/* Computing Parametrs ===============*/
+
+.computing_name {
+    display: flex;
+    align-items: center;
+
+    flex: 1;
+
+    min-height: 38px;
+    min-width: 290px;
+
+    padding: 0 10px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    background-color: #55a0ff;
+    border-radius: 5px;
+}
+
+.computing_value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    height: 38px;
+    min-width: 80px;
+
+    padding: 0 10px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    text-align: center;
+    overflow: hidden;
+
+    border-radius: 5px;
+}
+
+.computing_value p {
+    text-align: center;
+}
+
+.computing_meassure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+
+    height: 38px;
+    min-width: 80px;
+
+    padding: 0 10px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    text-align: center;
+    overflow: hidden;
+
+    border-radius: 5px;
+}
+
+.computing_meassure p {
+    text-align: center;
+}
+
+/* Parametrs Inputs ===============*/
+
+.inputs_fields {
+    display: flex;
+
+    margin-bottom: 5px;
+}
+
+.input_name {
+    display: flex;
+    flex: 1;
+
+    height: 30px;
+    min-width: 300px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    padding: 0 5px;
+}
+
+.input_meassure {
+    display: flex;
+
+    height: 30px;
+    width: 80px;
+
+    font-size: 12px;
+    padding: 0 5px;
+}
+
+.input_value {
+    display: flex;
+
+    height: 30px;
+    width: 80px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    padding: 0 5px;
+}
+
+/* Period ===============*/
+
+.period {
+    display: flex;
+    justify-content: center;
+
+    margin-bottom: 10px;
+}
+
+.btn_add_period {
+    width: 300px;
+    max-height: 30px;
+
+    font-size: 12px;
+    text-align: center;
+
+    padding: 4px;
+    margin-right: 10px;
+}
+
+.period_checkbox {
+    min-height: 18px;
+    min-width: 18px;
+
+    margin: auto 0;
+}
+
+.save_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Computing Parametrs Inputs ===============*/
+
+.computing_input_name {
+    display: flex;
+    flex: 1;
+
+    height: 30px;
+    min-width: 300px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    padding: 0 5px;
+}
+
+.computing_input_meassure {
+    display: flex;
+
+    height: 30px;
+    width: 80px;
+
+    font-size: 12px;
+    padding: 0 5px;
+}
+
+.computing_input_value {
+    display: flex;
+
+    height: 30px;
+    width: 190px;
+    margin-right: 5px;
+
+    font-size: 12px;
+    padding: 0 5px;
+}
+
+/* Equipments ===============*/
+
+.selection {
+    display: flex;
+    flex-direction: column;
+
+    overflow: auto;
+
+    width: 20%;
+    height: 80%;
+    max-height: 270px;
+
+    margin-right: 30px;
+}
+
+/* Extra parametrs ===============*/
+
+.extra_params_form {
+    display: flex;
+    align-items: center;
+
+    height: 23px;
+    margin-bottom: 5px;
+}
+
+.extra_params_form > h3 {
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    flex: 0 0 65%;
+
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.extra_params_form > input {
+    flex: 0 0 35%;
+    padding: 6px 8px;
+    height: 23px;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Description ===============*/
+
+.extra_etap_info {
+    margin-bottom: 20px;
+}
+
+.description {
+    display: flex;
+    max-height: 270px;
+}
+
+.description_inputs_forms {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.description_inputs_forms h3 {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.description_inputs_forms textarea {
+    height: 67px;
+    max-height: 67px;
+    min-height: 67px;
+}
+
+.description_inputs_forms textarea:last-child {
+    margin: 0;
+}
+
+.description_input {
+    display: flex;
+
+    margin-bottom: 7px;
+    padding: 6px 8px;
+
+    overflow: auto;
+
+    font-size: 12px;
+}
+
+/* Buttons Form ===============*/
+
+.buttons_control {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
+.buttons_control h3 {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.add_picture {
+    display: flex;
+
+    margin-bottom: 7px;
+}
+
+.btn_add_picture {
+    flex: 1;
+    min-width: 210px;
+    max-height: 41px;
+
+    font-size: 12px;
+    text-align: center;
+
+    padding: 4px;
+    margin-right: 10px;
+}
+
+.picture_checkbox {
+    min-height: 23px;
+    min-width: 23px;
+
+    margin: auto;
+}
+
+.delete_btn_block {
+    display: flex;
+    justify-content: center;
+}
+
+.delete_btn {
+    max-height: 41px;
+
+    font-size: 12px;
+    text-align: center;
+
+    padding: 4px;
+}
+
+/* Parametrs ===============*/
+
+.povtor {
+    display: flex;
+    flex-direction: column;
+}
+
+.povtor_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.povtor_title h3 {
+    font-size: 14px;
+    margin: 0;
+}
+
+.povtor_content {
+    display: flex;
+    overflow-y: auto;
+}
+
+.povtor_column {
+    display: flex;
+    flex-direction: column;
+}
+
+.long {
+    width: 60%;
+    margin-right: 10px;
+}
+
+.short {
+    width: 40%;
+}
+
+.povtor_check {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    margin-bottom: 10px;
+}
+
+.povtor_check_title {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.povtor_check_title h4 {
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+.povtor_checkbox {
+    min-height: 23px;
+    min-width: 23px;
+}
+
+.povtor_input {
+    padding: 6px 8px;
+
+    font-size: 12px;
+}
+
+/* Povtor Selection ===============*/
+
+.povtor_form {
+    width: 100%;
+}
+
+.povtor_form_title {
+    display: flex;
+    margin-bottom: 5px;
+
+    background-color: #eee;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .3) inset;
+
+    height: 30px;
+
+    padding: 0 0 0 5px;
+}
+
+.povtor_form_title  h3 {
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    flex: 0 0 80%;
+
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+.povtor_check_form {
+    display: flex;
+    flex-direction: column;
+
+    overflow: auto;
+
+    margin-bottom: 10px;
+    margin-top: -5px;
+    max-height: 200px;
+
+    padding: 5px;
+
+    box-shadow: 5px 0 5px -5px rgba(0, 0, 0, .3) inset, /* rigth */
+                -5px 0 5px -5px rgba(0, 0, 0, .3) inset, /* left */
+                0 -5px 5px -5px rgba(0, 0, 0, .3) inset; /* bottom */
+
+    background-color: #eee;
+}
+
+/* Selection ===============*/
+
+.equipment_form {
+    margin-right: 5px;
+
+    min-width: 160px;
+}
+
+.equip_title {
+    display: flex;
+    margin-bottom: 5px;
+
+    background-color: #eee;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .3) inset;
+
+    height: 30px;
+
+    padding: 0 0 0 5px;
+}
+
+.equip_title > h3 {
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    flex: 0 0 80%;
+
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+.off {
+    border-radius: 5px;
+}
+
+.on {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    box-shadow: 5px 0 5px -5px rgba(0, 0, 0, .3) inset, /* rigth */
+                -5px 0 5px -5px rgba(0, 0, 0, .3) inset, /* left */
+                0 5px 5px -5px rgba(0, 0, 0, .3) inset; /* top */
+}
+
+.btn_selector {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    flex: 0 0 20%;
+
+    padding: 0;
+    border: 0;
+    border-radius: 0 5px 5px 0;
+
+    background: none;
+
+    transition: background 0.1s linear;
+}
+
+.btn_selector:hover {
+    color: white;
+    background: #359C8E;
+}
+
+.btn_selector:active,
+.btn_selector:focus {
+    outline: none;
+}
+
+.check_form {
+    display: flex;
+    flex-direction: column;
+
+    overflow: auto;
+
+    margin-bottom: 10px;
+    margin-top: -5px;
+    max-height: 100px;
+
+    padding: 5px;
+
+    box-shadow: 5px 0 5px -5px rgba(0, 0, 0, .3) inset, /* rigth */
+                -5px 0 5px -5px rgba(0, 0, 0, .3) inset, /* left */
+                0 -5px 5px -5px rgba(0, 0, 0, .3) inset; /* bottom */
+
+    background-color: #eee;
+}
+
+.check_block {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 5px;
+}
+
+.check_block:last-child {
+    margin-bottom: 0;
+}
+
+.check_input {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.check_title h4 {
+    font-size: 12px;
+
+    margin-bottom: 3px;
+}
+
+.check_input > label {
+    margin-bottom: 0;
+    margin-left: 5px;
+
+    font-size: 10px;
+}
+
+/* End ===============*/
+
+.end {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    margin-top: 10px;
+}
+
+.end > button {
+    font-size: 12px;
+}
+
+/* Footer ===============*/
+
+/* Footer ===============*/
+
+.footer_bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    max-width: 1200px;
+
+    transform: translateX(-50%);
+    margin-left: 50%;
+    overflow: hidden;
+
+    margin-bottom: 15px;
+    margin-top: 20px;
+    padding: 0 15px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer_bar > button {
+    font-size: 14px;
+}
+
+
+
+/* Settings Animation ===============*/
+
+.slide-enter-active {
+    transition: max-height 0.50s ease-in-out;
+    overflow: hidden;
+}
+
+.slide-leave-active {
+    transition: max-height 0.50s ease-in-out;
+    overflow: hidden;
+}
+
+.slide-enter {
+    max-height: 0;
+}
+
+.slide-leave-to {
+    max-height: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.button_close_povtor {
+ display: flex;
+ justify-content: center;
+ width: 100%;
+}
+
+.button_close_povtor button {
+ font-size: 10px;
+
+ padding: 4px 4px;
+    margin-bottom: 10px;
+}

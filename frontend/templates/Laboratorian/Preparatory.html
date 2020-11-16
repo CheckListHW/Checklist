@@ -1,0 +1,294 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Laboratorian/css/Preparatory.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/icons/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+</head>
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etaps">
+            <div class="title">
+                <h1>Этап: {{ExeStageName}}. Образец: {{ SampleName }}</h1>
+            </div>
+
+            <hr>
+
+            <div class="content">
+                <div class="hint">
+                    <p><i class="fa fa-info-circle"></i> Перед выполнением этапа "{{ExeStageName}}" необходимо убедиться в выполнении следующих пунктов</p>
+                </div>
+{% verbatim %}
+                <div class="puncts_list">
+                    <div class="punct" v-for="(punct, index) in puncts">
+                        <button class="btn btn-info punct_button">{{index + 1}}. {{punct}}</button>
+                        <button class="btn btn-info btn_green start_button" @click="change_mini_visible(index)">Проверить пригодность</button>
+                        <button class="btn btn-info btn_green start_button small_btn" @click="change_visible(index)">Приступить</button>
+                        <input type="checkbox" class="punct_input" v-model="extra_etaps_check[index]" disabled/>
+                    </div>
+                </div>
+
+                {% endverbatim %}
+                <div class="footer_bar" v-if="{{ Number }} != -1">
+                    <button type="submit" class="btn btn-info btn_green"  @click="Stuffs()">Вернуться назад</button>
+                    <button type="submit" class="btn btn-info btn_green" @click="finish()" :disabled="control_check">Далее</button>
+                </div>
+                {% verbatim %}
+            <transition name="fade">
+                <div class="popup_window" v-for="(punct, number) in puncts" v-if="extra_etaps_visible[number]">
+                    <div class="window_form">
+                        <div class="extra_first_check" v-if="1 == active_form[number]" :key="1">
+                            <div class="title_inner">
+                                <h1>{{number + 1}}. {{puncts[number]}}</h1>
+                            </div>
+
+                            <div class="subtitle_inner">
+                                <h1>{{methods[number]}}</h1>
+                            </div>
+
+                            <div class="content">
+                                <div class="content_checklist">
+                                    <div class="content_item" v-if="!is_null(equipments[number])">
+                                        <div class="item_title">Оборудование</div>
+
+                                        <hr>
+
+                                        <div class="list">
+                                            <div class="item" v-for="(equipment, index) in equipments[number]">
+                                                <div class="name">{{index + 1}}. {{equipment}}</div>
+                                                <input type="checkbox" class="item_input"
+                                                       @click="changeStuff(equipments_check, number, index)"
+                                                       :checked="equipments_check[number][index]"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="content_item" v-if="!is_null(dishes[number])">
+                                        <div class="item_title">Посуда</div>
+
+                                        <hr>
+
+                                        <div class="list">
+                                            <div class="item" v-for="(dishe, index) in dishes[number]">
+                                                <div class="name">{{index + 1}}. {{dishe}}</div>
+                                                <input type="checkbox" class="item_input"
+                                                       @click="changeStuff(dishes_check, number, index)"
+                                                       :checked="dishes_check[number][index]"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="content_item" v-if="!is_null(reagents[number])">
+                                        <div class="item_title">Реагенты</div>
+
+                                        <hr>
+
+                                        <div class="list">
+                                            <div class="item" v-for="(reagent, index) in reagents[number]">
+                                                <div class="name">{{index + 1}}. {{reagent}}</div>
+                                                <input type="checkbox" class="item_input"
+                                                       @click="changeStuff(reagents_check, number, index)"
+                                                       :checked="reagents_check[number][index]"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="content_item" v-if="!is_null(documents[number])">
+                                        <div class="item_title">Документы</div>
+
+                                        <hr>
+
+                                        <div class="list">
+                                            <div class="item" v-for="(document, index) in documents[number]">
+                                                <div class="name">{{index + 1}}. {{document}}</div>
+                                                <input type="checkbox" class="item_input"
+                                                       @click="changeStuff(documents_check, number, index)"
+                                                       :checked="documents_check[number][index]"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="content_item" v-if="!is_null(sizs[number])">
+                                        <div class="item_title">СИЗы</div>
+
+                                        <hr>
+
+                                        <div class="list">
+                                            <div class="item" v-for="(siz, index) in sizs[number]">
+                                                <div class="name">{{index + 1}}. {{siz}}</div>
+                                                <input type="checkbox" class="item_input"
+                                                       @click="changeStuff(sizs_check, number, index)"
+                                                       :checked="sizs_check[number][index]"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="footer_bar_inner">
+                                    <button class="btn btn-danger" @click="cancel(number)">Отмена</button>
+                                    <button class="btn btn-info btn_green" :disabled="!next1[number]" @click="move(1)">Далее</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="extra_main_check" v-if="2 == active_form[number]" :key="2">
+                            <div class="title_inner">
+                                <h1>{{number + 1}}. {{puncts[number]}}</h1>
+                            </div>
+
+                            <div class="subtitle_inner">
+                                <h1>{{methods[number]}}</h1>
+                            </div>
+
+                            <div class="main_part">
+                                <div class="podetap_list">
+                                    <div class="podetap" v-for="(podetap, index) in podetaps[number]">
+                                        <div class="podetap_title">
+                                            <button class="btn btn-info" :disabled="disabled[number][index]" @click="change_params_visible(number, index)">{{index + 1}}. {{podetap}}</button>
+                                        </div>
+                                        <input type="checkbox" class="podetap_check" v-model="podetaps_check[number][index]" disabled />
+                                    </div>
+                                </div>
+
+                                <transition name="fade">
+                                    <div class="podetap_checklist" v-for="(podetap, subnumber) in podetaps[number]" v-if="parametrs_visible[number][subnumber]">
+                                        <div class="line">
+                                            <div class="inputs">
+                                                <div class="timer">
+                                                    <div class="field_title">
+                                                        <h2>Таймер</h2>
+                                                    </div>
+
+                                                    <div class="field_content">
+                                                        <button class="btn btn-info btn_green btn_play" @click="start(number, subnumber)" v-if="!plays[number][subnumber]" :disabled="podetaps_check[number][subnumber]"><i class="fa fa-play"></i></button>
+                                                        <button class="btn btn-info btn_green btn_play" @click="stop(number, subnumber)" v-else><i class="fa fa-pause"></i></button>
+                                                        <div class="timer_inner"><pretty_time :value="current_times[number][subnumber]" :key="current_times[number][subnumber]"></pretty_time></div>
+                                                        <div class="timer_inner"><pretty_time :value="podetaps_time[number][subnumber].time" :key="current_times[number][subnumber]"></pretty_time></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="parametrs" v-if="are_there_parametrs[number][subnumber]">
+                                                    <div class="field_title">
+                                                        <h2>Параметры</h2>
+                                                    </div>
+
+                                                    <div class="field_content" v-for="(params, index) in fact_parametrs[number][subnumber]">
+                                                        <div class="param_name">
+                                                            <h4>{{plan_parametrs[number][subnumber][index].name}}</h4>
+                                                        </div>
+
+                                                        <div class="parametrs_form">
+                                                            <input type="number" class="form-control parametrs_input"
+                                                                   v-model="fact_parametrs[number][subnumber][index]"/>
+                                                            <div class="parametrs_inner">
+                                                                <p>{{plan_parametrs[number][subnumber][index].value}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="text_fields">
+                                                <div class="field">
+                                                    <div class="field_title">
+                                                        <h2>Риски</h2>
+                                                    </div>
+
+                                                    <div class="text">
+                                                        <p>{{inf(information[number][subnumber].risks)}}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="field">
+                                                    <div class="field_title">
+                                                        <h2>HSE</h2>
+                                                    </div>
+
+                                                    <div class="text">
+                                                        <p>{{inf(information[number][subnumber].dangerous)}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="line">
+                                            <div class="buttons">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="footer_bar_settings_inner">
+                                            <button class="btn btn-info btn_green" @click="check_pressed(number, subnumber, 1)" :disabled="disabled[number][subnumber] || podetaps_check[number][subnumber] || first_play_push[number][subnumber] || parametrs_check">Завершить этап</button>
+                                        </div>
+                                    </div>
+                                </transition>
+                            </div>
+
+                            <div class="footer_bar_inner">
+                                <button class="btn btn-warning" @click="move(-1)">Назад</button>
+                                <button class="btn btn-info btn_green" :disabled="!control_check_podetaps" @click="finish_extra_etap(number)">Завершить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+
+            <transition name="fade">
+                <div class="popup_window" v-for="(punct, number) in puncts" v-if="extra_etaps_mini_check_visible[number]">
+                    <div class="middle_window_form">
+                        <div class="title_inner">
+                            <h1>{{number + 1}}. {{puncts[number]}}</h1>
+                        </div>
+
+                        <div class="subtitle_inner">
+                            <h1>Проверьте качество</h1>
+                        </div>
+
+                        <div class="titles">
+                            <div class="null"></div>
+                            <div class="mini_check_title">Да</div>
+                            <div class="mini_check_title">Нет</div>
+                        </div>
+
+                        <div class="mini_check_list">
+                            <div class="mini_check" v-for="(mini_check, index) in mini_checks[number]">
+                                <button class="btn btn-info punct_button">{{index + 1}}. {{mini_check}}</button>
+                                <input type="radio" class="radio_punct_input" v-model="mini_check_choosen[number][index]" value="1"/>
+                                <input type="radio" class="radio_punct_input" v-model="mini_check_choosen[number][index]" value="0"/>
+                            </div>
+                        </div>
+
+                        <div class="footer_bar_inner">
+                            <button class="btn btn-danger" @click="close_mini_check(number)">Отмена</button>
+                            <button class="btn btn-info btn_green" :disabled="control_mini_check" @click="mini_check_ok(number)">Ок</button>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+
+            <transition name="fade">
+                <div class="popup_window" v-for="(punct, number) in puncts" v-if="extra_etaps_message_visible[number]">
+                    <div class="small_window_form">
+                        <div class="subtitle_inner">
+                            <h1>Результат выполнения этапа "{{puncts[number]}}" неудовлетворительный. Выполните его полностью</h1>
+                        </div>
+
+                        <div class="button_bar">
+                            <button class="btn btn-info btn_green" @click="message_close(number)">Ок</button>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </div>
+{% endverbatim %}
+    {{ ExeStageName|json_script:"ExeStageName" }}
+    {{ Stage|json_script:"Stage" }}
+    {{ ExeExperiment|json_script:"ExeExperiment" }}
+    {{ ExeStage|json_script:"ExeStage" }}
+    {{ SampleName|json_script:"SampleName" }}
+{% load static %}
+<script src="{% static "Laboratorian/js/Preparatory.js" %} "></script>
+{% endblock %}

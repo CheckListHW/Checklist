@@ -1,0 +1,121 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Editor/css/StuffsStage.css" %}">
+</head>
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etap">
+            <div class="title">
+                <h1>Название этапа: {{Name}}</h1>
+            </div>
+
+            <hr>
+            {% verbatim %}
+            <div class="content">
+                <div class="content_item">
+                    <div class="item_title">Оборудование</div>
+
+                    <hr>
+                    <div class="list">
+                        <div class="item" v-for="(equipment, index) in equipments">
+                            <div class="name">{{index + 1}}. {{equipment.Name}}</div>
+                            <button class="btn btn-danger" @click="delete_item(equipments, index, 'Equipment', equipment.id)">
+                                X
+                            </button>
+                        </div>
+                    </div>
+
+                    <input type="text" v-model="inputs_value[0]" @keyup.enter="add_new(equipments, 0)" @keyup.esc="change_visibles(0)" placeholder="Введите оборудование" v-if="input_visibles[0]" class="form-control item_input"/>
+
+                    <button type="button" class="btn btn-info btn_add" @click="change_visibles(0)">Добавить оборудование</button>
+                </div>
+
+                <div class="content_item">
+                    <div class="item_title">Посуда</div>
+
+                    <hr>
+                    <div class="list">
+                        <div class="item" v-for="(dishe, index) in dishes">
+                            <div class="name">{{index + 1}}. {{dishe.Name}}</div>
+                            <button class="btn btn-danger" @click="delete_item(dishes, index,'Dishes', dishe.id)">
+                                X
+                            </button>
+                        </div>
+                    </div>
+
+                    <input type="text" v-model="inputs_value[1]" @keyup.enter="add_new(dishes, 1)" @keyup.esc="change_visibles(1)" placeholder="Введите посуду" v-if="input_visibles[1]" class="form-control item_input"/>
+
+                    <button type="button" class="btn btn-info btn_add" @click="change_visibles(1)">Добавить посуду</button>
+                </div>
+
+                <div class="content_item">
+                    <div class="item_title">Реактивы</div>
+
+                    <hr>
+                    <div class="list">
+                        <div class="item" v-for="(reagent, index) in reagents">
+                            <div class="name">{{index + 1}}. {{reagent.Name}}</div>
+                            <button class="btn btn-danger" @click="delete_item(reagents, index,'Reagents', reagent.id )">
+                                X
+                            </button>
+                        </div>
+                    </div>
+
+                    <input type="text" v-model="inputs_value[2]" @keyup.enter="add_new(reagents, 2)" @keyup.esc="change_visibles(2)" placeholder="Введите реагент" v-if="input_visibles[2]" class="form-control item_input"/>
+
+                    <button type="button" class="btn btn-info btn_add" @click="change_visibles(2)">Добавить реактив</button>
+                </div>
+
+                <div class="content_item">
+                    <div class="item_title">Документы</div>
+
+                    <hr>
+                    <div class="list">
+                        <div class="item" v-for="(document, index) in documents">
+                            <div class="name">{{index + 1}}. {{document.Name}}</div>
+                            <button class="btn btn-danger" @click="delete_item(documents, index, 'Doc',document.id)">
+                                X
+                            </button>
+                        </div>
+                    </div>
+
+                    <input type="text" v-model="inputs_value[3]" @keyup.enter="add_new(documents, 3)" @keyup.esc="change_visibles(3)" placeholder="Введите документ" v-if="input_visibles[3]" class="form-control item_input"/>
+
+                    <button type="button" class="btn btn-info btn_add" @click="change_visibles(3)">Добавить документ</button>
+                </div>
+
+                <div class="content_item">
+                    <div class="item_title">СИЗы</div>
+
+                    <hr>
+                    <div class="list">
+                        <div class="item" v-for="(siz, index) in sizs">
+                            <div class="name">{{index + 1}}. {{siz.Name}}</div>
+                            <button class="btn btn-danger" @click="delete_item(sizs, index, 'ProtectiveEquipment', siz.id)">
+                                X
+                            </button>
+                        </div>
+                    </div>
+
+                    <input type="text" v-model="inputs_value[4]" @keyup.enter="add_new(sizs, 4)" @keyup.esc="change_visibles(4)" placeholder="Введите СИЗ" v-if="input_visibles[4]" class="form-control item_input"/>
+
+                    <button type="button" class="btn btn-info btn_add" @click="change_visibles(4)">Добавить СИЗ</button>
+                </div>
+            </div>
+            <div class="footer_bar">
+                <button class="btn btn-outline-info" @click="Stages">Вернуться к списку этапов</button>
+                <button class="btn btn-outline-info" @click="finish">Продолжить редактировать
+                    <i class="fa fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+    {% endverbatim %}
+    {{ Stage|json_script:"Stage" }}
+    {{ Experiment|json_script:"Experiment" }}
+    {{ PreparatoryStage|json_script:"PreparatoryStage" }}
+{% load static %}
+<script src="{% static "Editor/js/StuffsStage.js" %} "></script>
+{% endblock %}

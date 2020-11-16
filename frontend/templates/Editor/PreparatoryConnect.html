@@ -1,0 +1,71 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Editor/css/PreparatoryConnect.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/anim/animate.min.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/icons/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+</head>
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etap">
+            <div class="title">
+                <h1>Этап: {{Name}}</h1>
+            </div>
+             <hr>
+{% verbatim %}
+            <div class="content">
+                <div class="hint">
+                    <p><i class="fa fa-info-circle"></i> Впечатайте ниже пункты проверки перед началом выполнения этапа</p>
+                </div>
+                <div class="tasks_form">
+                    <h2>Список пунктов</h2>
+
+                    <div class="tasks_list">
+                        <div class="task" v-for="(task, index) in tasks">
+                            <div class="name">{{index + 1}}. {{task.name}}.  {{ task.PreStage }}</div>
+                            <button class="btn btn-info btn_green" @click="change_link_visible(index)"><i class="fa fa-link"></i></button>
+                            <button class="btn btn-danger" @click="delete_item(tasks, index)"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <input type="text" placeholder="Введите пункт и нажмите Enter" @keyup.enter="add_new(tasks)" v-model="input_value" class="form-control">
+                </div>
+            </div>
+
+            <div class="footer_bar">
+                <button class="btn btn-outline-info" @click=Stuff()>Вернуться к списку этапов</button>
+                <button class="btn btn-outline-info" @click=finish()>Продолжить редактировать</button>
+            </div>
+
+            <div class="link_form" v-for="(task, index) in tasks">
+                <transition name="fade">
+                    <div class="popup_window" v-if="link_visibles[index]">
+                        <div class="small_window_form">
+                            <div class="link_main_title">
+                                <h2>Выберите подготовительный этап для привязки</h2>
+                            </div>
+
+                            <div class="link_inner_container">
+                                <div class="link_form" v-for="(extra_etap, number) in extra_etaps">
+                                    <input :id="number" name="radio" type="radio" v-bind:value="extra_etap" v-model="choosen_extra_etap">
+                                    <label :for="number">{{extra_etap.Number}}. {{extra_etap.name}}</label>
+                                </div>
+                            </div>
+
+                            <div class="footer_bar_inner">
+                                <button class="btn btn-info btn_green" @click="ok(index)">Ок</button>
+                                <button class="btn btn-danger" @click="back(index)">Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </div>
+    </div>
+{% endverbatim %}
+        {{ Experiment|json_script:"Experiment" }}
+        {{ Stage|json_script:"Stage" }}
+{% load static %}
+<script src="{% static "Editor/js/PreparatoryConnect.js" %} "></script>
+{% endblock %}

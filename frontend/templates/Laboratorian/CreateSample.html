@@ -1,0 +1,175 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Laboratorian/css/CreateSample.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/anim/animate.min.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/icons/font-awesome-4.7.0/css/font-awesome.css" %}">
+</head>
+    <!-- Main Body -->
+       <div class="main_body">
+        <div class="wrapper" id="etaps">
+            <div class="content">
+                <div class="hint">
+                    <p><i class="fa fa-info-circle"></i>{{Message}}</p>
+                </div>
+{% verbatim %}
+                <form action="/lab/sample/" method="post">
+                <div class="form">
+                    <div class="row">
+                        <div class="form_block small">
+                            <fieldset class="fieldset">
+                                <legend>Информация о закачике</legend>
+
+                                <div class="input_form">
+                                    <label>Наименование закачика</label>
+                                    <input name="Customer" class="form-control" type="text" v-model="customer" placeholder="Введите наименование заказчика">
+                                </div>
+
+                                <div class="input_form">
+                                    <label>Шифр пробы от заказчика</label>
+                                    <input name="CustomerCode" class="form-control" type="text" v-model="customer_code" placeholder="Введите шифр пробы от заказчика">
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <div class="form_block large flexible">
+                            <fieldset class="fieldset">
+                                <legend>Информация о месторождении</legend>
+
+                                <div class="input_form">
+                                    <label class="large_lab">Наименование месторождения</label>
+                                    <input name="Deposit" class="form-control" type="text" v-model="field" placeholder="Введите наименование месторождения">
+                                </div>
+
+                                <div class="input_form">
+                                    <label class="large_lab">Номер скважины</label>
+                                    <input name="WellNumber" class="form-control small_input" type="text" v-model="well" placeholder="Введите номер скважины">
+                                </div>
+
+                                <div class="input_form">
+                                    <label class="large_lab">Дата отбора</label>
+
+                                    <div class="date_choose">
+                                        <div class="form_group">
+                                            <select name="SelectionYear" v-model="year" v-on:change="modify">
+                                                <option v-for="year in get_years()" name="year" :value="year">{{year}}</option>
+                                            </select>
+
+                                            <label class="date_label">Год</label>
+                                        </div>
+
+                                        <div class="form_group">
+                                            <select name="SelectionMonth" v-model="month" v-on:change="modify">
+                                                <option v-for="month in months" name="month" :value="month">{{month + 1}}</option>
+                                            </select>
+
+                                            <label class="date_label">Месяц</label>
+                                        </div>
+
+                                        <div class="form_group" >
+                                            <select name="SelectionDay" v-model="date">
+                                                <option v-for="date in get_dates(year, month)" name="date" :value="date">{{date}}</option>
+                                            </select>
+
+                                            <label class="date_label">День</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input_form">
+                                    <label class="large_lab">Номер акта приема-передачи</label>
+                                    <input name="ActNumber" class="form-control small_input" type="text" v-model="act_number" placeholder="Введите номер акта приема-передачи">
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form_block large">
+                            <fieldset class="fieldset">
+                                <legend>Информация для лаборанта</legend>
+
+                                <div class="input_form">
+                                    <label>ФИО лаборанта</label>
+
+                                    <div class="fio_input">
+                                        <div class="form_group">
+                                            <input name="LabSurname" class="form-control" type="text" v-model="employee.surname" placeholder="Введите фамилию">
+
+                                            <label class="date_label">Фамилия</label>
+                                        </div>
+
+                                        <div class="form_group">
+                                            <input name="LabName" class="form-control" type="text" v-model="employee.name" placeholder="Введите имя">
+
+                                            <label class="date_label">Имя</label>
+                                        </div>
+
+                                        <div class="form_group" >
+                                            <input name="LabPatronymic" class="form-control" type="text" v-model="employee.patronymic" placeholder="Введите отчество">
+
+                                            <label class="date_label">Отчество</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input_form">
+                                    <label>Лабораторный шифр</label>
+                                    <input name="LabCode" class="form-control small_input" type="text" v-model="lab_code" placeholder="Введите лабораторный шифр">
+                                </div>
+
+                              <div class="input_form">
+                                    <label>Дата поступления пробы</label>
+
+                                    <div class="date_choose">
+                                        <div class="form_group">
+                                            <select name="ReceiptYear" v-model="year_prob" v-on:change="modify_prob">
+                                                <option v-for="year in get_years()" name="year" :value="year">{{year}}</option>
+                                            </select>
+
+                                            <label>Год</label>
+                                        </div>
+
+                                        <div class="form_group">
+                                            <select name="ReceiptMonth" v-model="month_prob" v-on:change="modify_prob">
+                                                <option v-for="month in months" name="month" :value="month">{{month + 1}}</option>
+                                            </select>
+
+                                            <label>Месяц</label>
+                                        </div>
+
+                                        <div class="form_group" >
+                                            <select name="ReceiptDay" v-model="date_prob">
+                                                <option v-for="date in get_dates(year_prob, month_prob)" name="date" :value="date">{{date}}</option>
+                                            </select>
+
+                                            <label>День</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input_form">
+                                    <label>Примечание</label>
+                                    <input name="Comment" class="form-control" type="text" v-model="note" placeholder="Введите примечание">
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer_bar">
+                    <input name="submit" class="btn btn-info btn_green" type="submit" value="Вернуться назад">
+                    <input name="submit" class="btn btn-info btn_green" type="submit" value="Сохранить">
+                    <input name="submit" class="btn btn-info btn_green" :disabled="!control_check" type="hidden" value="Сохранить">
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endverbatim %}
+
+{% load static %}
+<script src="{% static "Laboratorian/js/CreateSample.js" %} "></script>
+{% endblock %}

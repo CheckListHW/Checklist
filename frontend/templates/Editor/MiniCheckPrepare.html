@@ -1,0 +1,52 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Editor/css/MiniCheckPrepare.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/anim/animate.min.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/icons/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+</head>
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etap">
+            <div class="title">
+                <h1>Этап: {{Name}}</h1>
+            </div>
+{% verbatim %}
+            <hr>
+
+            <div class="content">
+                <div class="hint">
+                    <p><i class="fa fa-info-circle"></i> Впечатайте ниже критерии оценки качества выполненного этапа</p>
+                </div>
+
+                <div class="mini_checks_form">
+                    <h2>Список критериев</h2>
+
+                    <div class="mini_checks_list">
+                        <div class="mini_check" v-for="(mini_check, index) in mini_checks">
+                            <div class="name">{{index + 1}}. {{mini_check}}</div>
+                            <button class="btn btn-warning" @click="edit(index)"><i class="fa fa-pencil"></i></button>
+                            <button class="btn btn-danger" @click="delete_item(mini_checks, index)"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+
+                    <input type="text" placeholder="Введите критерий и нажмите Enter" @keyup.enter="add_new(mini_checks)" v-model="input_value" class="form-control">
+                </div>
+            </div>
+
+            <div class="footer_bar">
+                <button class="btn btn-outline-info" @click="SubStagesPrepare"> <i class="fa fa-arrow-left"></i> Вернуться назад</button>
+                <input type="hidden" class="btn btn-outline-danger" @click="Save"  value="Сохранить">
+                <button class="btn btn-outline-danger" @click="Stages" >Закончить</button>
+            </div>
+        </div>
+    </div>
+
+{% endverbatim %}
+        {{ Experiment|json_script:"Experiment" }}
+        {{ Stage|json_script:"Stage" }}
+{% load static %}
+<script src="{% static "Editor/js/MiniCheckPrepare.js" %} "></script>
+{% endblock %}

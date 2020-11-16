@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" http-equiv="Cache-Control" content="no-cache">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Editor/css/Header.css" %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "Shared/css/toast.css" %}">
+    <script src="{% static "Shared/js/toast.js" %} "></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+    <title>Document</title>
+</head>
+<body>
+   <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                {% if user.groups.get.name == "Editors"%}
+                <div>
+                    <nav class="nav">
+                        <a class="nav__link" href="/">Home</a>
+                        <a class="nav__link" href="#">{{user.groups.get.name}}</a>
+                    </nav>
+                </div>
+                {% endif %}
+                {% if user.groups.get.name == "Laboratorians" %}
+                <div>
+                    <nav class="nav">
+                        <a class="nav__link" href="#">Laboratorians</a>
+                    </nav>
+                </div>
+                <div>
+                    <nav class="nav">
+                        <a class="nav__link" href="/lab/home/">Вернутся к выбору проб.</a>
+                    </nav>
+                </div>
+                <div>
+                    <nav class="nav">
+                        <a class="nav__link" href="/lab/stages/?Sample={{ Sample }}">Вернутся к выбору этапов.</a>
+                    </nav>
+                </div>
+                <div>
+                    <nav class="nav">
+                        <p>Текущая проба: {{ SampleName }}</p>
+                    </nav>
+                </div>
+                {% endif %}
+                 <div class="user">
+                     <span style="color: #03044f; padding-right: 10px">Здравствуйте, {{ user.username  }}!</span>
+                    <a class="user_link" href="/logout">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </header>
+{% block content %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,161 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Editor/css/SubStages.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/icons/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+</head>
+
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper_expand" id="wrapper">
+            <div class="experiment" id="experiment">
+                <div class="main_title">
+                    <button type="button" class="btn">{{Number}}. {{Name}}</button>
+                    <button type="button" class="btn btn-warning edit_btn" v-if="is_vetvlenie" @click="change_condition_visible"><i class="fa fa-pencil"></i></button>
+                </div>
+{% verbatim %}
+                    <div class="variants">
+                    <div class="variant" v-for="(variant, index) in variants">
+                        <div class="var_inner">
+                            <div class="podetaps_bar">
+                                <div class="podetap_form" v-for="(podetap, index) in variants[index].podetaps">
+                                    <div class="podetap">
+                                        <p>{{podetap_number(etapnumber, variant.number + 1, index + 1)}}</p>
+                                        <button class="btn btn-info podetap_btn_fix_size" @click="podetaps_visiblechange(index, variant.number)">{{podetapName(podetap.name)}}</button>
+                                        <button type="button" class="btn btn-warning edit_btn" v-if="podetap.is_condition" @click="change_podetap_condition_visible(variant.number, index)"><i class="fa fa-pencil"></i></button>
+                                    </div>
+
+                                    <div class="podetaps_variants">
+                                        <div class="podetaps_variant" v-for="(podetaps_variant, index) in podetap.variants_podetps">
+                                            <div class="pod_var_inner">
+                                                <div class="pod_podetaps_bar">
+                                                    <div class="podetap_of_podetap" v-for="(pod_podetap, index) in podetaps_variant.podetaps_of_podetaps">
+                                                        <p>{{pod_podetap_number(etapnumber, variant.number + 1, podetap.number + 1, podetaps_variant.number + 1, index + 1)}}</p>
+                                                        <button class="btn btn-info pod_podetap_btn_fix_size" @click="pod_podetaps_visiblechange(index, podetaps_variant.number, podetap.number, variant.number)">{{podetapName(pod_podetap.name)}}</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="create_btn" v-if="podetap.vetvlenie_of_podetap[index]">
+                                                    <button type="button" class="btn btn_green btn-outline-info pod_podetap_create_btn" @click="addPod_podetap(variant.number, podetap.number, index,0, 0)">Создать под-подэтап</button>
+                                                </div>
+
+                                                <div class="create_btn" v-else>
+                                                    <button type="button" class="btn btn_green btn-outline-info pod_podetap_create_btn" @click="addPod_podetap(variant.number, podetap.number, index,0, 0)">Создать ветвление подэтапа</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="hr_border">
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="create_btn" v-if="vetvleniya[index]">
+                                <button type="button" class="btn btn-outline-info podetap_create_btn" @click="addPodetap(index, 0)">Создать подэтап</button>
+                            </div>
+
+                            <div class="create_btn" v-else>
+                                <button type="button" class="btn btn-outline-info podetap_create_btn" @click="addPodetap(index, 0)">Создать ветвление</button>
+                            </div>
+                        </div>
+
+                        <div class="hr_border">
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                {% endverbatim %}
+                <div class="footer_bar">
+                    <button class="btn btn-outline-info" @click="Stuffs"> <i class="fa fa-arrow-left"></i> Вернуться назад</button>
+                    <button class="btn btn-outline-danger" @click="Finish" >Закончить</button>
+                </div>
+                {% verbatim %}
+            </div>
+
+            <transition name="fade">
+                <div class="popup_window" v-if="vetvleniya_condition_visible">
+                    <div class="small_window_form">
+                        <div class="condition_main_title">
+                            <h2>Ветвления этапа "{{etap_name}}"</h2>
+                        </div>
+
+                        <div class="condition_inner_container">
+                            <div class="condition_form" v-for="(condition, index) in vetvleniya_condition">
+                                <div class="condition_title">
+                                    <p>Условие для ветки {{index + 1}}</p>
+                                </div>
+
+                                <div class="condition_input">
+                                    <input type="text" class="form-control" v-model="vetvleniya_condition[index]" placeholder="Введите условие"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="footer_bar_inner">
+                            <button class="btn btn-info btn_green" @click="change_condition_visible">Ок</button>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+
+            <div v-for="(variant, vindex) in variants">
+               <condition_bar_podetaps v-for="(podetap, pindex) in variant.podetaps"
+                            :podetap="podetap"
+                            :pindex="pindex"
+                            :vindex="vindex">
+                </condition_bar_podetaps>
+            </div>
+
+            <div v-for="(variant) in variants">
+               <settings_bar_podetaps v-for="(podetap, index) in variant.podetaps"
+                            :etapnumber="etapnumber"
+                            :vetvleniya="vetvleniya"
+                            :podetap="podetap"
+                            :podetaps="variant.podetaps"
+                            :index="index"
+                            :key="index"
+                            :number_of_variant="variant.number"
+                            :equipments="equipments"
+                            :dishes="dishes"
+                            :reagents="reagents"
+                            v-on:delete_podetap="delete_podetap">
+                </settings_bar_podetaps>
+            </div>
+            <div v-for="(variant) in variants">
+                <div v-for="(podetap) in variant.podetaps">
+                    <div v-for="(variant_of_podetps) in podetap.variants_podetps">
+                        <settings_bar_podetaps_podetaps v-for="(podetap_of_podetap, index) in variant_of_podetps.podetaps_of_podetaps"
+                                        :etapnumber="etapnumber"
+                                        :vetvleniya="vetvleniya"
+                                        :podetap="podetap"
+                                        :podetap_of_podetap="podetap_of_podetap"
+                                        :podpodetaps="variant_of_podetps.podetaps_of_podetaps"
+                                        :index="index"
+                                        :key="index"
+                                        :number_of_variant="variant.number"
+                                        :number_of_podetap="podetap.number"
+                                        :number_of_podetap_variant="variant_of_podetps.number"
+                                        :equipments="equipments"
+                                        :dishes="dishes"
+                                        :reagents="reagents"
+                                        v-on:delete_pod_podetap="delete_pod_podetap">
+                        </settings_bar_podetaps_podetaps>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endverbatim %}
+    {{ Number|json_script:"Number"}}
+    {{ Stage|json_script:"Stage"}}
+    {{ Experiment|json_script:"Experiment"}}
+{% load static %}
+    <script src="{% static "Editor/js/SubStages.js" %} "></script>
+{% endblock %}
+

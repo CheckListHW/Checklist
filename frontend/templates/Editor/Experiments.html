@@ -1,0 +1,45 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Editor/css/Experiments.css" %}">
+</head>
+{% verbatim %}
+<!-- Main Body -->
+<div class="main_body">
+    <div class="container">
+        <div class="title">
+            <h1>Эксперименты</h1>
+        </div>
+        <hr>
+        <div id="experiments">
+            <div class="experiments_btn">
+                <experiment_button v-for="(name, index) in names"
+                                    :name="name"
+                                    :number="index+1"
+                                    :expname="name.Name"
+                                    :id="name.id"
+                                    :index="index"
+                                    :key="index"
+                                    v-on:delete_experiment="delete_experiment">
+                </experiment_button>
+            </div>
+
+            <create_name v-show="visible"
+                            v-on:hide="hide"
+                            :visible="visible"
+                            :names="names">
+            </create_name>
+
+            <div class="create_btn">
+                <button class="btn btn-outline-info" @click="visible = !visible">Создать новую схему</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endverbatim %}
+{% load static %}
+<script src="{% static "Editor/js/Experiments.js" %} "></script>
+{% endblock %}
+

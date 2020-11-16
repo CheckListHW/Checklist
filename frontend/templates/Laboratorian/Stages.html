@@ -1,0 +1,36 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Laboratorian/css/Stages.css" %}">
+</head>
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etaps">
+                <div class="content">
+                <div class="hint">
+                    <p><i class="fa fa-info-circle"></i> Выберите этап эксперимента, который будете выполнять</p>
+                </div>
+                {% verbatim %}
+                <div class="etap_list">
+                    <div class="etap" v-for="(etap, index, Check) in etaps">
+                        <button class="btn btn-info"   @click="choose_etap(index)">{{index + 1}}. {{etap}}</button>
+                    </div>
+                </div>
+                <div class="footer_bar">
+                    <form method="post" action="/lab/sample/select/">
+                        <button class="btn btn-info btn_green">Вернуться назад</button>
+                    </form>
+                   {% endverbatim %}
+                    <button class="btn btn-info btn_green" v-if="button_visible" @click="Stuffs">Перейти к выполнению этапа</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ Sample|json_script:"Sample" }}
+    {{ ExeExperiment|json_script:"ExeExperiment" }}
+    {{ SampleName|json_script:"SampleName" }}
+{% load static %}
+<script src="{% static "Laboratorian/js/Stages.js" %} "></script>
+{% endblock %}

@@ -1,0 +1,546 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Laboratorian/css/Check.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/anim/animate.min.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/icons/font-awesome-4.7.0/css/font-awesome.css" %}">
+</head>
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etaps">
+            <div class="title">
+                <h1>{{ExeStageName}}</h1>
+            </div>
+{% verbatim %}
+            <hr>
+
+            <div class="content">
+                <div class="hint">
+                    <p v-if="!process"><i class="fa fa-info-circle"></i> Нажмите на кнопку когда будете готовы приступить к выполнению</p>
+                    <p v-else><i class="fa fa-info-circle"></i> Нажмите на кнопку "play" для начала проведения этапа. <span style="font-weight: 600;">После нажатия на "Завершить этап", все поля для ввода перестанут быть активными, таймер остановится и также перестанет быть активным!</span></p>
+                </div>
+
+                <div class="start_button" v-if="!process">
+                    <button class="btn btn-info btn_green" @click="start_done">Приступить к выполнению</button>
+                </div>
+
+                <div class="main_part">
+                    <div class="podetap_list">
+                        <div class="podetap" v-for="(podetap, index) in podetaps">
+                            <div class="main_part_of_podetap">
+                                <div class="podetap_title">
+                                    <button class="btn btn-info" :disabled="disabled[index]" @click="change_visible(index)">{{index + 1}}. {{podetap}}</button>
+                                </div>
+                                <input type="checkbox" class="item_input" v-model="podetaps_check[index]" disabled />
+                            </div>
+
+                            <div class="variants_list" v-for="(variant, number) in variants_podetps[index]" v-if="variants_vetvleniya_of_podetap[index][number]">
+                                <div class="pod_podetaps_list">
+                                    <div class="pod_podetap" v-for="(pod_podetap, subnumber) in variants_podetps[index][number]">
+                                        <div class="pod_podetap_title">
+                                            <button class="btn btn-info" :disabled="pod_podetaps_disabled[index][subnumber]" @click="pod_podetap_change_visible(index, number, subnumber)">{{index + 1}}.{{subnumber + 1}}. {{variants_podetps[index][number][subnumber].name}}</button>
+                                        </div>
+                                        <input type="checkbox" class="item_input" v-model="pod_podetaps_check[index][number][subnumber]" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checks">
+                        <transition-group name="fade">
+                            <div class="podetap_checklist" v-for="(podetap, number) in podetaps" v-if="parametrs_visible[number]" v-bind:key="podetap">
+                                <div class="line">
+                                    <div class="inputs">
+                                        <div class="timer">
+                                            <div class="field_title">
+                                                <h2>Таймер</h2>
+                                            </div>
+
+                                            <div class="timer_collumn_title_form">
+                                                <div class="timer_null"></div>
+
+                                                <div class="collumn_titles">
+                                                    <div class="timer_collumn_title">
+                                                        <p>Факт</p>
+                                                    </div>
+                                                    <div class="timer_collumn_title">
+                                                        <p>План</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="field_content">
+                                                <button class="btn btn-info btn_green btn_play" @click="start(number)" v-if="!plays[number]" :disabled="podetaps_check[number] || !first_play_push[number]"><i class="fa fa-play"></i></button>
+                                                <button class="btn btn-info btn_green btn_play" @click="stop(number)" v-else><i class="fa fa-pause"></i></button>
+                                                <div class="timer_inner"><pretty_time :value="current_times[number]" :key="current_times[number]"></pretty_time></div>
+                                                <div class="timer_inner"><pretty_time :value="podetaps_time[number]" :key="current_times[number]"></pretty_time></div>
+                                            </div>
+                                        </div>
+                                        <div class="buttons" v-if="are_there_picture_add[number]">
+                                            <div class="example-1">
+                                                <div class="form-group">
+                                                    <label class="label">
+                                                        <span class="title">Загрузить изображение</span>
+                                                        <input type="file" id="file" ref="file" v-on:change="handleFileUpload(number, -1, -1)" :disabled="podetaps_check[number] || first_play_push[number]" />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text_fields">
+                                        <div class="field">
+                                            <div class="field_title">
+                                                <h2>Риски</h2>
+                                            </div>
+
+                                            <div class="text">
+                                                <p>{{inf(information[number].risks)}}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="field">
+                                            <div class="field_title">
+                                                <h2>HSE</h2>
+                                            </div>
+
+                                            <div class="text">
+                                                <p>{{inf(information[number].dangerous)}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="line collums_direction">
+                                    <div class="parametrs" v-if="are_there_parametrs[number]">
+                                        <div class="field_title">
+                                            <h2>Параметры</h2>
+                                        </div>
+
+                                        <div class="parametrs_collumn_title_form">
+                                            <div class="parametr_null"></div>
+
+                                            <div class="collumn_titles">
+                                                <div class="parametr_collumn_title">
+                                                    <p>Факт</p>
+                                                </div>
+                                                <div class="parametr_collumn_title">
+                                                    <p>План</p>
+                                                </div>
+                                                <div class="parametr_collumn_title">
+                                                    <p>Ед. изм.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="parametrs_field_content" v-for="(params, index) in fact_parametrs[number]">
+                                            <div class="name">
+                                                <h4>{{plan_parametrs[number][index].name}}</h4>
+                                            </div>
+
+                                            <div class="parametrs_form">
+                                                <input type="number" class="form-control parametrs_input" v-model="fact_parametrs[number][index]" :disabled="first_play_push[number]" />
+                                                <div class="parametrs_inner">
+                                                    <p>{{plan_parametrs[number][index].value}}</p>
+                                                </div>
+                                                <div class="parametrs_inner">
+                                                    <p>{{plan_parametrs[number][index].measure}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="parametrs" v-if="are_there_computed_parametrs[number]">
+                                        <div class="field_title">
+                                            <h2>Параметры для расчетов</h2>
+                                            <params_list :array="all_computed_parametrs"
+                                                         :input="input_computed_parametrs"
+                                                         :inner_input="pod_podetaps_input_computed_parametrs"
+                                                         :computed_parametrs="computed_parametrs"
+                                                         :variants_podetps="variants_podetps"
+                                            ></params_list>
+                                        </div>
+
+                                        <div class="parametrs_collumn_title_form">
+                                            <div class="parametr_null"></div>
+
+                                            <div class="collumn_titles">
+                                                <div class="parametr_collumn_title">
+                                                    <p>Факт</p>
+                                                </div>
+                                                <div class="parametr_collumn_title">
+                                                    <p>Ед. изм.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div v-for="(params, index) in computed_parametrs[number]">
+                                            <div class="parametrs_field_content">
+                                                <div class="computed_name">
+                                                    <h4>{{params.name}} ({{params.variable}})</h4>
+                                                </div>
+
+                                                <div class="parametrs_form">
+                                                    <input type="number" class="form-control computed_parametrs_input" v-model="input_computed_parametrs[number][index]" :disabled="first_play_push[number]"/>
+                                                    <div class="parametrs_inner">
+                                                        <p>{{params.measure}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="parametrs" v-if="are_there_period_parametrs[number]">
+                                        <div class="field_title">
+                                            <h2>Параметры с периодичностью</h2>
+                                        </div>
+
+                                        <div class="parametrs_collumn_title_form">
+                                            <div class="parametr_null"></div>
+
+                                            <div class="collumn_titles">
+                                                <div class="parametr_collumn_title">
+                                                    <p>Факт</p>
+                                                </div>
+                                                <div class="parametr_collumn_title">
+                                                    <p>Ед. изм.</p>
+                                                </div>
+                                                <div class="parametr_collumn_title">
+                                                    <p>Время изм.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div v-for="(params, index) in period_parametrs[number]">
+                                            <div class="parametrs_field_content">
+                                                <div class="computed_name">
+                                                    <h4>{{params.name}}</h4>
+                                                </div>
+
+                                                <div class="parametrs_form for_period">
+                                                    <div class="period_row" v-for="(period, un_index) in input_period_parametrs[number][index]">
+                                                        <input type="number" class="form-control computed_parametrs_input" v-model="input_period_parametrs[number][index][un_index].value" :disabled="first_play_push[number]"
+                                                        @change="fix_time(number, index, un_index)"/>
+                                                        <div class="parametrs_inner">
+                                                            <p>{{params.measure}}</p>
+                                                        </div>
+                                                        <div class="parametrs_inner">
+                                                            <pretty_time :value="input_period_parametrs[number][index][un_index].time" :key="input_period_parametrs[number][index][un_index].time"></pretty_time>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="btn_form">
+                                                        <button class="btn btn-info btn_green" @click="add_period(number, index)" :disabled="first_play_push[number]"><i class="fa fa-plus"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="end">
+                                    <button class="btn btn-info btn_green" @click="check_pressed(number, 0)" :disabled="disabled[number] || podetaps_check[number] || first_play_push[number] || parametrs_check || computed_parametrs_check || period_parametrs_check">Завершить подэтап</button>
+                                </div>
+                            </div>
+                        </transition-group>
+
+                        <div class="variants_checks_list" v-for="(variant, index) in variants_podetps">
+                            <div class="variant_check_list" v-for="(pod_podetps_list, number) in variant">
+                                <transition name="fade">
+                                    <div class="podetap_checklist" v-for="(pod_podetp, subnumber) in pod_podetps_list" v-if="pod_podetap_parametrs_visibles[index][number][subnumber]">
+                                        <div class="line">
+                                            <div class="inputs">
+                                                <div class="timer">
+                                                    <div class="field_title">
+                                                        <h2>Таймер</h2>
+                                                    </div>
+
+                                                    <div class="timer_collumn_title_form">
+                                                        <div class="timer_null"></div>
+
+                                                        <div class="collumn_titles">
+                                                            <div class="timer_collumn_title">
+                                                                <p>Факт</p>
+                                                            </div>
+                                                            <div class="timer_ccollumn_title">
+                                                                <p>План</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="field_content">
+                                                        <button class="btn btn-info btn_green btn_play" @click="pod_podetap_start(index, number, subnumber)" v-if="!pod_podetap_plays[index][number][subnumber]" :disabled="pod_podetaps_check[index][number][subnumber]"><i class="fa fa-play"></i></button>
+                                                        <button class="btn btn-info btn_green btn_play" @click="pod_podetap_stop(index, number, subnumber)" v-else><i class="fa fa-pause"></i></button>
+                                                        <div class="timer_inner"><pretty_time :value="pod_podetaps_current_times[index][number][subnumber]" :key="pod_podetaps_current_times[index][number][subnumber]"></pretty_time></div>
+                                                        <div class="timer_inner"><pretty_time :value="variants_podetps[index][number][subnumber].experiment_times" :key="pod_podetaps_current_times[index][number][subnumber]"></pretty_time></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="buttons" v-if="variants_podetps[index][number][subnumber].add_picture">
+                                                    <div class="example-1">
+                                                        <div class="form-group">
+                                                            <label class="label">
+                                                                <span class="title">Загрузить изображение</span>
+                                                                <input type="file" id="file" ref="file" v-on:change="handleFileUpload(index, number, subnumber)" :disabled="pod_podetaps_check[index][number][subnumber] || pod_podetap_first_play_push[index][number][subnumber]" />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="text_fields">
+                                                <div class="field">
+                                                    <div class="field_title">
+                                                        <h2>Риски</h2>
+                                                    </div>
+
+                                                    <div class="text">
+                                                        <p>{{inf(variants_podetps[index][number][subnumber].descriptions.risks)}}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="field">
+                                                    <div class="field_title">
+                                                        <h2>HSE</h2>
+                                                    </div>
+
+                                                    <div class="text">
+                                                        <p>{{inf(variants_podetps[index][number][subnumber].descriptions.attention)}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="line collums_direction">
+                                           <div class="parametrs" v-if="pod_podetaps_are_there_parametrs(index, number, subnumber)">
+                                                <div class="field_title">
+                                                    <h2>Параметры</h2>
+                                                </div>
+
+                                                <div class="parametrs_collumn_title_form">
+                                                    <div class="parametr_null"></div>
+
+                                                    <div class="collumn_titles">
+                                                        <div class="parametr_collumn_title">
+                                                            <p>Факт</p>
+                                                        </div>
+                                                        <div class="parametr_collumn_title">
+                                                            <p>План</p>
+                                                        </div>
+                                                        <div class="parametr_collumn_title">
+                                                            <p>Ед. изм.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="parametrs_field_content" v-for="(params, sub_subnumber) in variants_podetps[index][number][subnumber].params">
+                                                    <div class="name">
+                                                        <h4>{{params.name}}</h4>
+                                                    </div>
+
+                                                    <div class="parametrs_form">
+                                                        <input type="number" class="form-control parametrs_input" v-model="pod_podetaps_fact_parametrs[index][number][subnumber][sub_subnumber]" :disabled="pod_podetap_first_play_push[index][number][subnumber]"/>
+                                                        <div class="parametrs_inner">
+                                                            <p>{{params.value}}</p>
+                                                        </div>
+                                                        <div class="parametrs_inner">
+                                                            <p>{{params.measure}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="parametrs" v-if="pod_podetaps_are_there_computed_parametrs(index, number, subnumber)">
+                                                <div class="field_title">
+                                                    <h2>Параметры для расчетов</h2>
+                                                    <params_list :array="all_computed_parametrs"
+                                                         :input="input_computed_parametrs"
+                                                         :inner_input="pod_podetaps_input_computed_parametrs"
+                                                         :computed_parametrs="computed_parametrs"
+                                                         :variants_podetps="variants_podetps"
+                                                    ></params_list>
+                                                </div>
+
+                                                <div class="parametrs_collumn_title_form">
+                                                    <div class="parametr_null"></div>
+
+                                                    <div class="collumn_titles">
+                                                        <div class="parametr_collumn_title">
+                                                            <p>Факт</p>
+                                                        </div>
+                                                        <div class="parametr_collumn_title">
+                                                            <p>Ед. изм.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div v-for="(params, sub_subnumber) in variants_podetps[index][number][subnumber].computed_params" >
+                                                    <div class="parametrs_field_content">
+                                                        <div class="computed_name">
+                                                            <h4>{{params.name}} ({{params.variable}})</h4>
+                                                        </div>
+
+                                                        <div class="parametrs_form">
+                                                            <input type="number" class="form-control computed_parametrs_input" v-model="pod_podetaps_input_computed_parametrs[index][number][subnumber][sub_subnumber]"/ :disabled="pod_podetap_first_play_push[index][number][subnumber]">
+                                                            <div class="parametrs_inner">
+                                                                <p>{{params.measure}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="parametrs" v-if="pod_podetaps_are_there_period_parametrs(index, number, subnumber)">
+                                                <div class="field_title">
+                                                    <h2>Параметры с периодичностью</h2>
+                                                </div>
+
+                                                <div class="parametrs_collumn_title_form">
+                                                    <div class="parametr_null"></div>
+
+                                                    <div class="collumn_titles">
+                                                        <div class="parametr_collumn_title">
+                                                            <p>Факт</p>
+                                                        </div>
+                                                        <div class="parametr_collumn_title">
+                                                            <p>Ед. изм.</p>
+                                                        </div>
+                                                        <div class="parametr_collumn_title">
+                                                            <p>Время изм.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div v-for="(params, sub_subnumber) in variants_podetps[index][number][subnumber].period_params">
+                                                    <div class="parametrs_field_content">
+                                                        <div class="computed_name">
+                                                            <h4>{{params.name}}</h4>
+                                                        </div>
+
+                                                        <div class="parametrs_form for_period">
+                                                            <div class="period_row" v-for="(period, un_index) in pod_podetaps_input_period_parametrs[index][number][subnumber][sub_subnumber]">
+                                                                <input type="number" class="form-control computed_parametrs_input" v-model="pod_podetaps_input_period_parametrs[index][number][subnumber][sub_subnumber][un_index].value" :disabled="pod_podetap_first_play_push[index][number][subnumber]"
+                                                                @change="podetap_fix_time(index, number, subnumber, sub_subnumber, un_index)"/>
+                                                                <div class="parametrs_inner">
+                                                                    <p>{{params.measure}}</p>
+                                                                </div>
+                                                                <div class="parametrs_inner">
+                                                                    <pretty_time :value="pod_podetaps_input_period_parametrs[index][number][subnumber][sub_subnumber][un_index].time" :key="pod_podetaps_input_period_parametrs[index][number][subnumber][sub_subnumber][un_index].time"></pretty_time>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="btn_form">
+                                                                <button class="btn btn-info btn_green" @click="podetap_add_period(index, number, subnumber, sub_subnumber)" :disabled="pod_podetap_first_play_push[index][number][subnumber]"><i class="fa fa-plus"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="end">
+                                            <button class="btn btn-info btn_green" @click="pod_podetaps_check_pressed(index, number, subnumber, 0)" :disabled="pod_podetaps_disabled[index][subnumber] || pod_podetaps_check[index][number][subnumber] || pod_podetap_first_play_push[index][number][subnumber] || pod_podetap_first_picture_push[index][number][subnumber] || pod_podetap_parametrs_check || pod_podetap_computed_parametrs_check || pod_podetap_period_parametrs_check">Завершить подэтап</button>
+                                        </div>
+                                    </div>
+                                </transition>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer_bar">
+                    <button class="btn btn-info btn_green" @click="Preparatory()"  >Вернуться назад</button>
+                    <button class="btn btn-info btn_green" @click="Stages()" :disabled="!control_check">Завершить этап</button>
+                </div>
+
+                <transition name="fade">
+                    <div class="popup_window" v-if="povtor">
+                        <div class="small_window_form">
+                            <div class="povtor_main_title">
+                                <h2>{{povtor_message}}?{{povtor_count_message()}}</h2>
+                            </div>
+
+                            <div class="povtor_buttons">
+                                <button class="btn btn-info btn_green" @click="povtor_ok">Да</button>
+                                <button class="btn btn-danger" @click="povtor_no">Нет</button>
+                            </div>
+                        </div>
+                    </div>
+                </transition>
+
+                <transition name="fade">
+                    <div class="popup_window" v-if="podetap_povtor">
+                        <div class="small_window_form">
+                            <div class="povtor_main_title">
+                                <h2>{{povtor_message}}?{{povtor_count_message()}}</h2>
+                            </div>
+
+                            <div class="povtor_buttons">
+                                <button class="btn btn-info btn_green" @click="podetap_povtor_ok">Да</button>
+                                <button class="btn btn-danger" @click="podetap_povtor_no">Нет</button>
+                            </div>
+                        </div>
+                    </div>
+                </transition>
+
+                <transition name="fade">
+                    <div class="popup_window" v-if="choose">
+                        <div class="small_window_form">
+                            <div class="condition_main_title">
+                                <h2>Выберите один вариант</h2>
+                            </div>
+
+                            <div class="condition_inner_container">
+                                <div class="condition_form" v-for="(condition, number) in vetvleniya_condition">
+                                    <button class="btn btn-info">{{vetvleniya_condition[number]}}</button>
+                                    <input type="radio" class="item_input" v-bind:value="number" v-model="selected_vetvleniya" @click="main_btn_disabled = false"/>
+                                </div>
+                            </div>
+
+                            <div class="footer_bar_inner">
+                                <button class="btn btn-info btn_green" @click="choose_main_vetvlenie" :disabled="main_btn_disabled">Ок</button>
+                            </div>
+                        </div>
+                    </div>
+                </transition>
+
+                <transition name="fade">
+                    <div class="choice" v-for="(choice, index) in vetvleniya_of_podetap_condition" v-if="vetvleniya_condition_visible[index]">
+
+                        <div class="popup_window">
+                            <div class="small_window_form">
+                                <div class="condition_main_title">
+                                    <h2>Выберите один вариант</h2>
+                                </div>
+
+                                <div class="condition_inner_container">
+                                    <div class="condition_form" v-for="(condition, number) in vetvleniya_of_podetap_condition[index]">
+                                        <button class="btn btn-info">{{vetvleniya_of_podetap_condition[index][number]}}</button>
+                                        <input type="radio" class="item_input" v-bind:value="number" v-model="selected_vetvleniya_of_podetap[index]" @click="btn_disabled = false"/>
+                                    </div>
+                                </div>
+
+                                <div class="footer_bar_inner">
+                                    <button class="btn btn-info btn_green" @click="close(index, 0)" :disabled="btn_disabled">Ок</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </transition>
+            </div>
+        </div>
+    </div>
+
+
+{% endverbatim %}
+    {{ ExeStageName|json_script:"ExeStageName" }}
+    {{ Stage|json_script:"Stage" }}
+    {{ ExeExperiment|json_script:"ExeExperiment" }}
+    {{ ExeStage|json_script:"ExeStage" }}
+    {{ SampleName|json_script:"SampleName" }}
+    {{ Sample|json_script:"Sample" }}
+{% load static %}
+<script src="{% static "Laboratorian/js/Check.js" %} "></script>
+{% endblock %}

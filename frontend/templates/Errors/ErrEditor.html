@@ -1,0 +1,11 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Laboratorian/css/Stages.css" %}">
+</head>
+    <p>Страница не доступна: {{ Message }}</p>
+{% load static %}
+<script src="{% static "Laboratorian/js/Stages.js" %} "></script>
+{% endblock %}

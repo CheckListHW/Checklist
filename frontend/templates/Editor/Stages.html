@@ -1,0 +1,151 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Editor/css/Stages.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/anim/animate.min.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/icons/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+</head>
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etaps">
+            <div class="title">
+                <h1>Эксперимент: {{expname}}</h1>
+            </div>
+             <hr>
+{% verbatim %}
+    <div class="content">
+                <div class="collumn">
+                    <div class="collumn_title">
+                        <h2>Основные этапы</h2>
+                    </div>
+
+                    <div class="etaps">
+                        <div class="etaps_btns" v-for="(name, index) in etaps_names">
+                            <div class="etap">
+                                <button class="btn btn-info etap_btn" @click="MainStuffs(index)">{{ index + 1}}. {{name}}</button>
+                            </div>
+                            <div class="edit_btns">
+                                <button class="btn btn-warning edit_btn" v-on:click="edit(1, index)"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-danger edit_btn" @click="delete_etap(index)"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <transition name="fade">
+                        <div class="popup_window" v-if="edit_etaps_visibles.visible">
+                            <div class="small_window_form">
+                                <div class="window_title">
+                                    <h2>Редактирование основного этапа</h2>
+                                </div>
+
+                                <div class="creating_etap">
+                                    <input type="text" value="" v-model="input_name" class="form-control"/>
+                                </div>
+
+                                <div class="control_btns">
+                                    <button v-on:click="change" class="btn btn-info" :disabled="is_null">Ок</button>
+                                    <button v-on:click="edit_cancel(1)" class="btn btn-danger">Отмена</button>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <div class="popup_window" v-if="etaps_visibles.visible">
+                            <div class="small_window_form">
+                                <div class="window_title">
+                                    <h2>Создание основного этапа</h2>
+                                </div>
+
+                                <div class="creating_etap">
+                                    <input type="text" placeholder="Ввеедите название основного этапа" value="" v-model="input_name" class="form-control"/>
+                                </div>
+
+                                <div class="control_btns">
+                                    <button v-on:click="add_etap_name" class="btn btn-info" :disabled="is_null">Ок</button>
+                                    <button v-on:click="cancel(1)" class="btn btn-danger">Отмена</button>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
+
+                    <div class="create_btn">
+                        <button type="button" class="btn btn-outline-info" @click="etaps_visibles.visible = !etaps_visibles.visible">Создать основной этап</button>
+                    </div>
+                </div>
+
+                <div class="collumn">
+                    <div class="collumn_title">
+                        <h2>Подготовительные этапы</h2>
+                    </div>
+
+                    <div class="etaps">
+                        <div class="etaps_btns" v-for="(name, index) in extra_etaps_names">
+                            <div class="etap">
+                                <button class="btn btn-info etap_btn btn_green" @click="PrepareStuffs(index)">{{ index+1 }}. {{name}}</button>
+                            </div>
+                            <div class="edit_btns">
+                                <button class="btn btn-warning edit_btn" v-on:click="edit(2, index)"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-danger edit_btn" @click="delete_extra_etap(index)"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <transition name="fade">
+                        <div class="popup_window" v-if="edit_extra_etaps_visibles.visible">
+                            <div class="small_window_form">
+                                <div class="window_title">
+                                    <h2>Редактирование подготовительного этапа</h2>
+                                </div>
+
+                                <div class="creating_etap">
+                                    <input type="text" value="" v-model="input_name" class="form-control"/>
+                                </div>
+
+                                <div class="control_btns">
+                                    <button v-on:click="change" class="btn btn-info" :disabled="is_null">Ок</button>
+                                    <button v-on:click="edit_cancel(2)" class="btn btn-danger">Отмена</button>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <div class="popup_window" v-if="extra_etaps_visibles.visible">
+                            <div class="small_window_form">
+                                <div class="window_title">
+                                    <h2>Создание подготовительного этапа</h2>
+                                </div>
+
+                                <div class="creating_etap">
+                                    <input type="text" placeholder="Ввеедите название подготовительного этапа" value="" v-model="input_name" class="form-control"/>
+                                </div>
+
+                                <div class="control_btns">
+                                    <button v-on:click="add_extra_etap_name" class="btn btn-info btn_green" :disabled="is_null">Ок</button>
+                                    <button v-on:click="cancel(2)" class="btn btn-danger">Отмена</button>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
+
+                    <div class="create_btn">
+                        <button type="button" class="btn btn-outline-info btn_outline_green" @click="extra_etaps_visibles.visible = !extra_etaps_visibles.visible">Создать подготовительный этап</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer_bar">
+                <form method="post" action="/">
+                    <button class="btn btn-info btn_green">Вернуться назад</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endverbatim %}
+
+        {{ Experiment|json_script:"Experiment" }}
+{% load static %}
+<script src="{% static "Editor/js/Stages.js" %} "></script>
+{% endblock %}

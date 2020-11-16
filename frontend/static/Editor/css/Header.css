@@ -1,0 +1,70 @@
+/* Header ===============*/
+
+.header {
+    background-color: #55a0ff;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    top: 0;
+    left: 0;
+    box-shadow: 0 0 7px;
+}
+
+.header__inner {
+    display: flex;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Navigator ===============*/
+
+.nav {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.nav__link {
+    margin-left: 20px;
+    color: #000;
+    text-decoration: none;
+    opacity: 0.75;
+
+    transition: opacity 0.1s linear;
+}
+
+.nav__link:nth-child(2) {
+    margin-left: 5px;
+}
+
+.nav__link:hover {
+    color: #000;
+    text-decoration: none;
+    opacity: 1;
+}
+
+/* User ===============*/
+
+.user {
+    display: flex;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.user_link {
+    color: #000;
+    text-decoration: none;
+    opacity: 0.75;
+
+    transition: opacity 0.1s linear;
+}
+
+.user_link:hover {
+    color: #000;
+    text-decoration: none;
+    opacity: 1;
+}
