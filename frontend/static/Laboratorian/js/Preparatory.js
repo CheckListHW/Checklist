@@ -387,6 +387,14 @@ axios.get('/api/execalcparameters/?ExeStage=' + JSON.parse(document.getElementBy
 
                 startTimer: function (number, index) {
                     this.timers[number][index] = setInterval(() => {
+                        if (this.podetaps_time[number][index].time < this.current_times[number][index]){
+                            if (this.current_times[number][index] % 2 == 0){
+                                document.title = "Время"
+                            }
+                            else {
+                                document.title = "Вышло"
+                            }
+                        }
                         Vue.set(this.current_times[number], index, this.current_times[number][index] + 1);
                     }, 1000)
                 },
@@ -489,12 +497,9 @@ axios.get('/api/execalcparameters/?ExeStage=' + JSON.parse(document.getElementBy
                 },
 
                 control_check_podetaps: function () {
-                    console.log(this.podetaps_check[this.active_extra_etap])
                     if (this.podetaps_check[this.active_extra_etap].indexOf(false) == -1) {
-                        console.log(true)
                         return true;
                     } else {
-                        console.log(false)
                         return false;
                     }
                 },
@@ -823,8 +828,6 @@ axios.get('/api/execalcparameters/?ExeStage=' + JSON.parse(document.getElementBy
                         }
                     })
                 }
-                console.log('podetaps_check')
-                console.log(this.podetaps_check)
             },
             components: {
                 pretty_time: {

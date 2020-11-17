@@ -19,6 +19,7 @@ def moveToExeSub(preSubStage, SubStages, ExeStage1, ParentExeSubStage):
                                              OtherOption=i.OtherOption, Check=False, Parent=ParentExeSubStage,
                                              ReplayMessage=i.ReplayMessage)
             ParentExeSubStage1.save()
+            print(ParentExeSubStage1)
             Parametrs = Parameter.objects.filter(SubStage=i)
             CalcParametrs = CalcParameter.objects.filter(SubStage=i)
 
