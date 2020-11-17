@@ -4,4 +4,3 @@ venv/*
 /frontend/media/
 *.xml
 *.jpg
-/db.sqlite3
