@@ -731,6 +731,14 @@ new Vue ({
 
         startTimer: function(index) {
             this.timers[index] = setInterval(() => {
+                if (this.podetaps_time[index].time < this.current_times[index]){
+                    if (this.current_times[index] % 2 == 0){
+                        document.title = "Время"
+                    }
+                    else {
+                        document.title = "Вышло"
+                    }
+                }
                 Vue.set(this.current_times, index, this.current_times[index]+1);
             }, 1000)
         },
@@ -1233,6 +1241,14 @@ new Vue ({
 
         pod_podetap_startTimer: function(index, number, subnumber) {
             this.pod_podetap_timers[index][number][subnumber] = setInterval(() => {
+                if (this.podetaps_time[index][number][subnumber].time < this.current_times[index][number][subnumber]){
+                    if (this.current_times[index] % 2 == 0){
+                        document.title = "Время"
+                    }
+                    else {
+                        document.title = "Вышло"
+                    }
+                }
                 var array = this.pod_podetaps_current_times[index][number];
                 Vue.set(array, subnumber, array[subnumber]+1);
             }, 1000)
