@@ -19,7 +19,6 @@ def moveToExeSub(preSubStage, SubStages, ExeStage1, ParentExeSubStage):
                                              OtherOption=i.OtherOption, Check=False, Parent=ParentExeSubStage,
                                              ReplayMessage=i.ReplayMessage)
             ParentExeSubStage1.save()
-            print(ParentExeSubStage1)
             Parametrs = Parameter.objects.filter(SubStage=i)
             CalcParametrs = CalcParameter.objects.filter(SubStage=i)
 
@@ -133,12 +132,14 @@ def allpreparestage():
     NumberExperiment = 2
     for delStage in Stage.objects.filter(Number=-1):
         delStage.delete()
+    for delExeStage in ExeStage.objects.filter(Number=-1):
+        delExeStage.delete()
     allPrepareStage = Stage(Name='Все подготовительные этапы',
           PreparatoryStage=False, Experiment_id=NumberExperiment, Number=-1)
     allPrepareStage.save()
 
     for prepareStage in Stage.objects.filter(PreparatoryStage=1, Experiment_id=NumberExperiment):
-        Paragraph(PreparatoryStage=prepareStage.id, Name=allPrepareStage.Name,
+        Paragraph(PreparatoryStage=prepareStage.id, Name=prepareStage.Name,
                   PreparatoryStageName=prepareStage.Name, Stage=allPrepareStage).save()
 
     ExeExp = ExeExperiment.objects.last()
