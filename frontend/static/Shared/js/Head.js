@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", function(){
-        console.log( JSON.parse(document.getElementById('SampleName').textContent))
-        if (JSON.parse(document.getElementById('SampleName')).textContent != null) {
-                document.title = JSON.parse(document.getElementById('SampleName').textContent)
+        let sampleName = JSON.parse(document.getElementById('SampleName').textContent)
+        if (sampleName != null & sampleName != '') {
+                document.title = sampleName
+        }
+        else{
+                document.title ='Номер пробы: ' + JSON.parse(document.getElementById('Sample').textContent)
         }
 })

@@ -1,45 +1,14 @@
 //POVTOR
 
 Vue.component ('params_list', {
-    props: ["array", "input", "inner_input", "computed_parametrs", "variants_podetps"],
+    props: ["array"],
     template:  `<select>
                     <option selected="true" disabled="true">Список переменных</option>
                     <option v-for="(params, index) in parametrs" name="params" :value="params" disabled="true" class="black">{{params.variable}} - {{params.value}}</option>
                 </select>`,
     computed: {
         parametrs: function(){
-
             var list = [];
-            for(var i = 0; i < this.input.length; i++) {
-                for(var j = 0; j < this.input[i].length; j++) {
-                    if(this.input[i][j] != "") {
-                        var item = {
-                            variable: this.computed_parametrs[i][j].variable,
-                            value: this.input[i][j],
-                        }
-
-                        list.push(item);
-                    }
-                }
-            }
-
-            for(var i = 0; i < this.inner_input.length; i++) {
-                for(var j = 0; j < this.inner_input[i].length; j++) {
-                    for(var k = 0; k < this.inner_input[i][j].length; k++) {
-                        for(var l = 0; l < this.inner_input[i][j][k].length; l++) {
-                            if(this.inner_input[i][j][k][l] != "") {
-                                var item = {
-                                    variable: this.variants_podetps[i][j][k].computed_params[l].variable,
-                                    value: this.inner_input[i][j][k][l],
-                                }
-
-                                list.push(item);
-                            }
-                        }
-                    }
-                }
-            }
-
             for(var i = 0; i < this.array.length; i++) {
                 for(var j = 0; j < this.array[i].length; j++) {
                     list.push(this.array[i][j]);
@@ -441,6 +410,7 @@ new Vue ({
                 paramCalcExist = false
                 let newPeriodParam = []
                 let newGetPeriodParam = GetCalcOrPeriodParam(vm.execalcparameters.data, firstChild.id, true)
+                console.log(newGetPeriodParam)
 
                 if (newGetPeriodParam != null) {
                     newGetPeriodParam.forEach(function (param, i ) {
@@ -496,6 +466,9 @@ new Vue ({
 
             })
 
+            console.log(vm.period_parametrs)
+            console.log(vm.computed_parametrs)
+            console.log(vm.period_parametrs)
 
             var len = this.podetaps.length;
 
@@ -731,14 +704,6 @@ new Vue ({
 
         startTimer: function(index) {
             this.timers[index] = setInterval(() => {
-                if (this.podetaps_time[index].time < this.current_times[index]){
-                    if (this.current_times[index] % 2 == 0){
-                        document.title = "Время"
-                    }
-                    else {
-                        document.title = "Вышло"
-                    }
-                }
                 Vue.set(this.current_times, index, this.current_times[index]+1);
             }, 1000)
         },
@@ -1102,6 +1067,7 @@ new Vue ({
             }
             //POVTOR проверка есть ли после этого этапа повторение
             if(this.povtors[index].check) {
+                if (!old) {
                     this.povtor = true;
                     this.povtor_message = this.povtors[index].message;
                     this.povtor_index = index;
@@ -1109,9 +1075,7 @@ new Vue ({
                     for (var i = 0; i < this.povtors[index].povtor_podetaps.length; i++) {
                         this.povtor_etaps.push(this.povtors[index].povtor_podetaps[i].number)
                     }
-                    if (old) {
-                        this.povtor_no()
-                    }
+                }
             }
             else
             {
@@ -1120,7 +1084,6 @@ new Vue ({
                         Vue.set(this.disabled, index + 1, false);
                         if (!old){
                             Vue.set(this.parametrs_visible, index + 1, true);
-
                         }
                         this.active_podetap = this.active_podetap + 1;
                         this.open_p = index + 1;
@@ -1128,7 +1091,6 @@ new Vue ({
                         this.opening_p = false;
                         this.open_p = -1
                     }
-
                 }
                 else {
                     this.selected_vetvleniya_of_podetap[index] = this.selectparallel[index]
@@ -1241,14 +1203,6 @@ new Vue ({
 
         pod_podetap_startTimer: function(index, number, subnumber) {
             this.pod_podetap_timers[index][number][subnumber] = setInterval(() => {
-                if (this.podetaps_time[index][number][subnumber].time < this.current_times[index][number][subnumber]){
-                    if (this.current_times[index] % 2 == 0){
-                        document.title = "Время"
-                    }
-                    else {
-                        document.title = "Вышло"
-                    }
-                }
                 var array = this.pod_podetaps_current_times[index][number];
                 Vue.set(array, subnumber, array[subnumber]+1);
             }, 1000)
@@ -1393,14 +1347,9 @@ new Vue ({
         vm.Replays = (await axios.get(`/api/exereplay/?MainStage=${vm.ExeStage}`)).data
 
 
+        mainSubStages = GetChild(vm.SubStages.data, null);
 
-
-
-
-        let mainSubStages = GetChild(vm.SubStages.data, null);
-        console.log(mainSubStages)
-
-        let SelectMain = -1;
+        var SelectMain = -1;
         mainSubStages.forEach(function (mainSubStage, i) {
             vm.firstChilds.push(GetChild(vm.SubStages.data, mainSubStage.id))
             vm.vetvleniya_condition.push(mainSubStage.Condition)
@@ -1411,8 +1360,8 @@ new Vue ({
             if (mainSubStage.Check && SelectMain){
                 SelectMain = i;
             }
-            if (mainSubStages.length == 1){
-                SelectMain = 0
+            if (mainSubStage.length = 1){
+                SelectMain =0
             }
         })
 
@@ -1423,6 +1372,7 @@ new Vue ({
             this.choose_main_vetvlenie();
         }
 
+        console.log(vm.SubChecks)
 
         this.firstChilds[this.selected_vetvleniya].forEach(function (firstChild, i) {
 
@@ -1431,11 +1381,17 @@ new Vue ({
                 }
                 let secondChilds =(GetChild(vm.SubStages.data, firstChild.id))
                 secondChilds.forEach(function (secondChild, i1) {
+
                     let thirdChilds = GetChild(vm.SubStages.data, secondChild.id)
                     thirdChilds.forEach(function (thirdChild, i2) {
+
+                        if (firstChild.Check ) {
+                //            pod_podetaps_check_pressed(i, i1, i2, 1)
+                        }
+
                     })
                 })
-         })
+        })
 
 
     }
@@ -1455,9 +1411,8 @@ function sIncrease(i, ii) {
 function GetChild(SubStages, Parent) {
     NewStages = []
     SubStages.forEach(function (SubStage) {
-        if (SubStage.Parent == Parent){
+        if (SubStage.Parent == Parent)
             NewStages.push(SubStage);
-        }
     })
     return NewStages.sort(sIncrease);
 }

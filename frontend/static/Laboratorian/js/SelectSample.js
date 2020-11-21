@@ -151,7 +151,7 @@ new Vue ({
         let samples = await axios.get('/api/samples/');
         samples.data.forEach(function (sample) {
             vm.probs.push({
-                lab_code: sample.LabCode,
+                lab_code: 131,
                 id: sample.id,
                 customer_code: sample.CustomerCode,
                 customer: sample.Customer,

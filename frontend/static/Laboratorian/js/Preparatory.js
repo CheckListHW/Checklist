@@ -6,6 +6,9 @@ axios.get('/api/execalcparameters/?ExeStage=' + JSON.parse(document.getElementBy
     Stages = jsonGetParam(exestage.data, exeparagraph.data);
     let otherthings = new Array(Stages.length),
         criterions = new Array(Stages.length);
+            console.log(Stages)
+            console.log(exestage.data)
+            console.log(JSON.parse(document.getElementById('ExeExperiment').textContent))
     Stages.forEach(function (stage, i) {
         axios.get('/api/exesubstage/?ExeStage=' + Stages[i].id).then(function (exesubstages) {
         axios.get('/api/exeequipment/?ExeStage=' + Stages[i].id).then(function (exeequipments) {
@@ -14,6 +17,7 @@ axios.get('/api/execalcparameters/?ExeStage=' + JSON.parse(document.getElementBy
         axios.get('/api/exeprotectiveequipments/?ExeStage=' + Stages[i].id).then(function (exeprotectiveequipments) {
         axios.get('/api/exedocs/?ExeStage=' + Stages[i].id).then(function (exedocs) {
         axios.get('/api/execriterion/?ExeStage=' + Stages[i].id).then(function (execriterion) {
+
 
             execriterion.data.forEach(function (criterion) {
                 criterions.push(criterion)
@@ -387,14 +391,6 @@ axios.get('/api/execalcparameters/?ExeStage=' + JSON.parse(document.getElementBy
 
                 startTimer: function (number, index) {
                     this.timers[number][index] = setInterval(() => {
-                        if (this.podetaps_time[number][index].time < this.current_times[number][index]){
-                            if (this.current_times[number][index] % 2 == 0){
-                                document.title = "Время"
-                            }
-                            else {
-                                document.title = "Вышло"
-                            }
-                        }
                         Vue.set(this.current_times[number], index, this.current_times[number][index] + 1);
                     }, 1000)
                 },
@@ -497,9 +493,12 @@ axios.get('/api/execalcparameters/?ExeStage=' + JSON.parse(document.getElementBy
                 },
 
                 control_check_podetaps: function () {
+                    console.log(this.podetaps_check[this.active_extra_etap])
                     if (this.podetaps_check[this.active_extra_etap].indexOf(false) == -1) {
+                        console.log(true)
                         return true;
                     } else {
+                        console.log(false)
                         return false;
                     }
                 },
@@ -828,6 +827,8 @@ axios.get('/api/execalcparameters/?ExeStage=' + JSON.parse(document.getElementBy
                         }
                     })
                 }
+                console.log('podetaps_check')
+                console.log(this.podetaps_check)
             },
             components: {
                 pretty_time: {

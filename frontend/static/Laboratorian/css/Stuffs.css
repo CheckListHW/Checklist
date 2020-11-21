@@ -276,7 +276,7 @@ hr {
     max-width: 300px;
 
     margin-right: 10px;
-    margin-bottom: 0px;
+    margin-bottom: 10px;
 
     flex: 1;
 }
@@ -298,11 +298,9 @@ hr {
 
 .list {
     width: 100%;
-    height: 85%;
-    max-height: calc(100vh - 330px);
-    overflow-y: visible;
+    max-height: calc(100vh - 305px);
+    overflow-y: auto;
     overflow-x: hidden;
-    margin-bottom: 0px;
 }
 
 .item {
@@ -360,7 +358,7 @@ hr {
     overflow: hidden;
 
     margin-bottom: 10px;
-    margin-top: 0px;
+    margin-top: 20px;
     padding: 0 15px;
 
     display: flex;
