@@ -42,7 +42,7 @@ class ExeStage(models.Model):
 
 class ExeSubStage(models.Model):
     ExeStage = models.ForeignKey(ExeStage, on_delete=models.CASCADE, null='true')
-    SubStage = models.ForeignKey(SubStage, on_delete=models.CASCADE, null='true')
+    SubStage = models.ForeignKey(SubStage, on_delete=models.DO_NOTHING, null='true')
     Parent = models.ForeignKey('self', on_delete=models.CASCADE, null='true')
     Number = models.IntegerField(null='true')
     Criterion = models.CharField(max_length=200, null='true')
@@ -64,7 +64,7 @@ class Picture(models.Model):
 
 class ExeParameter(models.Model):
     ExeSubStage = models.ForeignKey(ExeSubStage, on_delete=models.CASCADE, null='true')
-    ExeMainStage = models.ForeignKey(ExeStage, on_delete=models.CASCADE, null='true')
+    ExeMainStage = models.ForeignKey(ExeStage, on_delete=models.DO_NOTHING, null='true')
     ParameterName = models.CharField(max_length=30)
     From = models.FloatField(null='true')
     To = models.FloatField(null='true')
@@ -89,43 +89,43 @@ class ExeCalcParameter(models.Model):
 class ExeEquipment(models.Model):
     Check = models.BooleanField(null='true')
     Name = models.CharField(max_length=50)
-    ExeStage = models.ForeignKey(ExeStage, on_delete=models.CASCADE)
+    ExeStage = models.ForeignKey(ExeStage, on_delete=models.DO_NOTHING)
 
 
 class ExeDishes(models.Model):
     Check = models.BooleanField(null='true')
     Name = models.CharField(max_length=50)
-    ExeStage = models.ForeignKey(ExeStage, on_delete=models.CASCADE)
+    ExeStage = models.ForeignKey(ExeStage, on_delete=models.DO_NOTHING)
 
 
 class ExeReagents(models.Model):
     Check = models.BooleanField(null='true')
     Name = models.CharField(max_length=50)
-    ExeStage = models.ForeignKey(ExeStage, on_delete=models.CASCADE)
+    ExeStage = models.ForeignKey(ExeStage, on_delete=models.DO_NOTHING)
 
 
 class ExeProtectiveEquipment(models.Model):
     Check = models.BooleanField(null='true')
     Name = models.CharField(max_length=50)
-    ExeStage = models.ForeignKey(ExeStage, on_delete=models.CASCADE)
+    ExeStage = models.ForeignKey(ExeStage, on_delete=models.DO_NOTHING)
 
 
 class ExeDoc(models.Model):
     Check = models.BooleanField(null='true')
     Name = models.CharField(max_length=50)
-    ExeStage = models.ForeignKey(ExeStage, on_delete=models.CASCADE)
+    ExeStage = models.ForeignKey(ExeStage, on_delete=models.DO_NOTHING)
 
 
 class ExeParagraph(models.Model):
     Name = models.CharField(max_length=200)
-    ExeStage = models.ForeignKey(ExeStage, on_delete=models.CASCADE)
+    ExeStage = models.ForeignKey(ExeStage, on_delete=models.DO_NOTHING)
     ExePreparatoryStage = models.IntegerField(null='true')
     ExePreparatoryStageName = models.CharField(max_length=302, null='true')
 
 
 class ExeCriterion(models.Model):
     Name = models.CharField(max_length=200)
-    ExeStage = models.ForeignKey(ExeStage, on_delete=models.CASCADE)
+    ExeStage = models.ForeignKey(ExeStage, on_delete=models.DO_NOTHING)
     Answer = models.BooleanField(null='true')
 
 
