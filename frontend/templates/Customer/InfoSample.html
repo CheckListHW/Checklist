@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../anim/animate.min.css">
+    <link rel="stylesheet" href="../icons/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/customer_etap_css.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <div>
+                    <nav class="nav">
+                        <a class="nav__link" href="#">Home</a>
+                        <a class="nav__link" href="#">About</a>
+                    </nav>
+                </div>
+
+                <div class="user">
+                    <a class="user_link">User Name</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etaps">
+            <div class="content">
+                <div class="title">
+                    <h1>Статистика пробы "{{prob_name}}"</h1>
+                </div>
+
+                <div class="time_etaps">
+                    <div class="sub_title">
+                        <h2>Продолжительность выполнения этапов</h2>
+                        <hr>
+                    </div>
+
+                    <div class="etaps_list">
+                        <div class="row">
+                            <div class="null_row_title">
+
+                            </div>
+
+                            <div class="collumn_title" v-for="n in 13">
+                                <h3>Этап {{n}}</h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="row_title cell">
+                                <h3>План</h3>
+                            </div>
+
+                            <div class="plan cell" v-for="(time, index) in plan_time">
+                                <pretty_time :value="time"></pretty_time>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="row_title cell">
+                                <h3>Факт</h3>
+                            </div>
+
+                            <div v-bind:class="{cell: true, green: flag[index], red: !flag[index]}" v-for="(time, index) in fact_time" @mouseover="hover_on(index)" @mouseout="hover_off">
+                                <pretty_time :value="time"></pretty_time>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="graphics">
+                    <div class="sub_title">
+                        <h2>Графики плотности, вязкости и содержания серы</h2>
+                        <hr>
+                    </div>
+
+                    <div class="graphics_list">
+                        <div class="qraphic">
+                            <canvas id="myChart"></canvas>
+                            <h3>Плотность в сравнениии с аналогами, кг/м<sup style="font-size: 8px;">3</sup></h3>
+                        </div>
+
+                        <div class="qraphic">
+                            <canvas id="myChart1"></canvas>
+                            <h3>Вязкость в сравнениии с аналогами, мПа*с</h3>
+                        </div>
+
+                        <div class="qraphic">
+                            <canvas id="myChart2"></canvas>
+                            <h3>Содержание серы в сравнениии с аналогами, %</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="short_information">
+                    <div class="sub_title">
+                        <h2>Краткая характеристика</h2>
+                        <hr>
+                    </div>
+
+                    <div class="info_list">
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>По плотности</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{density()}}</h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>По вязкости</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{velocity()}}</h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>По соержанию серы</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{sulfur()}}</h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>По массовому содержанию светлых фракций (М)</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{fractions()}}</h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>По массовому содержанию смолисто-асфальтовых веществ</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{asphalt()}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button">
+                    <button class="btn btn-info">Назад</button>
+                </div>
+            </div>
+
+            <transition name="fade">
+                <div class="popup_window" v-if="hover">
+                    <div class="sub_title" id="popup_title">
+                        <h2>Этап {{hover_index + 1}}</h2>
+                    </div>
+
+                    <div class="main_part">
+                        <div class="block_title">
+                            <p>План: </p>
+                            <pretty_time :value="plan_time[hover_index]"></pretty_time>
+                        </div>
+
+                        <div class="block" :style="{ width: width_first + 'px' }">
+
+                        </div>
+
+                        <div class="block_title">
+                            <p>Факт: </p>
+                            <pretty_time :value="fact_time[hover_index]"></pretty_time>
+                        </div>
+
+                        <div class="block" :style="{ width: width_second + 'px' }">
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </div>
+
+
+    <script src="js/customer_etap_js.js"></script>
+</body>
+</html>
