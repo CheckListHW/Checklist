@@ -37,6 +37,8 @@ class ExeStage(models.Model):
     Number = models.IntegerField(null='true')
     Check = models.BooleanField(null='true')
     CheckStuff = models.BooleanField(null='true')
+    Duration = models.FloatField(null='true')
+    Runtime = models.FloatField(null='true')
     PreparatoryStage = models.BooleanField(null='true')
 
 
@@ -51,9 +53,9 @@ class ExeSubStage(models.Model):
     Risks = models.CharField(max_length=200, null='true')
     Condition = models.CharField(max_length=200, null='true')
     Attention = models.CharField(max_length=200, null='true')
-    Duration = models.FloatField(null='true')
     Picture = models.BooleanField(null='true')
-    OtherOption = models.BooleanField(null='true')
+    Duration = models.FloatField(null='true')
+    Runtime = models.FloatField(null='true')
     Check = models.BooleanField(null='true')
 
 

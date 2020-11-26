@@ -4,10 +4,11 @@ from rest_framework.routers import SimpleRouter
 
 from home import Filters as EditorsFilters
 from lab import Filters as LaoratorianFilters
+from Customer import Filters as CustomerFilters
 
 from home import views as EditorsViews
 from lab import views as LaoratorianViews
-from lab.views import *
+from Customer import views as CustomerViews
 
 router = SimpleRouter()
 router.register('api/exp', EditorsFilters.ExperimentsView)
@@ -40,7 +41,6 @@ router.register('api/execalcparameters', LaoratorianFilters.ExeCalcParametersLis
 router.register('api/execriterion', LaoratorianFilters.ExeCriterionsListView, basename='ExeCriterionsList')
 router.register('api/exereplay', LaoratorianFilters.ExeReplayListView, basename='ExeEeplayList')
 
-
 urlpatterns = [
     path('', EditorsViews.Start),
     path('home/', EditorsViews.experiments),
@@ -66,6 +66,8 @@ urlpatterns = [
     path('lab/preparatory/crud/', LaoratorianViews.preparatorycrud),
     path('lab/check/', LaoratorianViews.check),
     path('lab/check/crud/', LaoratorianViews.checkcrud),
+    path('customer/samples/', CustomerViews.selectsample),
+    path('customer/infosample/', CustomerViews.InfoSample),
     path('admin/', admin.site.urls),
 ]
 

@@ -18,14 +18,6 @@
     <header class="header">
         <div class="container">
             <div class="header__inner">
-                {% if user.groups.get.name == "Editors"%}
-                <div>
-                    <nav class="nav">
-                        <a class="nav__link" href="/">Home</a>
-                        <a class="nav__link" href="#">{{user.groups.get.name}}</a>
-                    </nav>
-                </div>
-                {% endif %}
                 {% if user.groups.get.name == "Laboratorians" %}
                 <div>
                     <nav class="nav">
@@ -47,9 +39,16 @@
                         <p>Текущая проба: {{ SampleName }}</p>
                     </nav>
                 </div>
+                {% else %}
+                <div>
+                    <nav class="nav">
+                        <a class="nav__link" href="/">Home</a>
+                        <a class="nav__link" href="#">{{user.groups.get.name}}</a>
+                    </nav>
+                </div>
                 {% endif %}
                  <div class="user">
-                     <span style="color: #03044f; padding-right: 10px">Здравствуйте, {{ user.username  }}!</span>
+                    <span style="color: #03044f; padding-right: 10px">Здравствуйте, {{ user.username  }}!</span>
                     <a class="user_link" href="/logout">Выйти</a>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from rest_framework.utils import json
 from .models import *
@@ -75,6 +75,8 @@ def Start(request):
             return checkauth(request, 'Editor/Experiments.html')
         if user.groups.get().name == 'Laboratorians':
             return render(request, 'Laboratorian/SelectSample.html')
+        if user.groups.get().name == 'Customers':
+            return HttpResponseRedirect("/customer/samples")
     return render(request, 'Welcome/StartPage.html')
 
 

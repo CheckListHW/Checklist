@@ -1,0 +1,94 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Customer/css/SelectSample.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/anim/animate.min.css" %}">
+    <link rel="stylesheet" href="{% static "Editor/icons/font-awesome-4.7.0/css/font-awesome.css" %}">
+</head>
+    {% verbatim %}
+<body>
+    <!-- Main Body -->
+     <div class="main_body">
+        <div class="wrapper" id="etaps">
+            <div class="content">
+                <div class="hint">
+                    <p><i class="fa fa-info-circle"></i> Выберите пробу, по которой будет проведен эксперимент. Список проб можно отфильтровать и отсортировать.</p>
+                </div>
+
+                <div class="filters">
+                    <div class="filter_title">
+                        <h2>Фильтрация и сортировка</h2>
+                    </div>
+
+                    <div class="filters_list">
+                        <select v-model="select_customer">
+                            <option value="0">Все заказчики</option>
+                            <option v-for="customer in customers" :key="customer.id" :value="customer.id">{{customer.name}}</option>
+                        </select>
+
+                        <select v-model="select_field">
+                            <option value="0">Все месторождения</option>
+                            <option v-for="field in fields" :key="field.id" :value="field.id">{{field.name}}</option>
+                        </select>
+
+                        <select v-model="select_well">
+                            <option value="0">Все скважины</option>
+                            <option v-for="well in wells" :key="well.id" :value="well.id">{{well.name}}</option>
+                        </select>
+
+                        <select v-model="select_sort">
+                            <option v-for="rule in sort_rules" :key="rule.key" :value="rule.key">{{rule.title}}</option>
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="prob_list">
+                    <div class="prob_title">
+                        <h2>Список проб</h2>
+                    </div>
+
+                    <div class="table">
+                        <table class="probs_table">
+                            <thead>
+                                <tr>
+                                    <th>№ п/п</th>
+                                    <th>Лаб. шифр</th>
+                                    <th>Шифр пробы от заказчика</th>
+                                    <th>Заказчик</th>
+                                    <th>Месторождение</th>
+                                    <th>Скважина</th>
+                                    <th>Дата отбора</th>
+                                    <th>Номер акта приема-передачи</th>
+                                    <th>Дата поступления пробы</th>
+                                    <th>ФИО сотрудника, принявшего пробу</th>
+                                    <th>Примечание</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    is="probs_list"
+                                    v-for="(prob, index) in filtered_probs"
+                                    :prob="prob"
+                                    :index="index"
+                                    :key="index"
+                                    v-on:choose_prob="choose_prob(index, prob)"
+                                ></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endverbatim %}
+{{ user.id|json_script:"User" }}
+
+
+{% load static %}
+<script src="{% static "Customer/js/SelectSample.js" %} "></script>
+{% endblock %}

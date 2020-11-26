@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from rest_framework.utils import json
 
-from Checklist.settings import MEDIA_ROOT
 from lab.models import *
 from home.models import *
 from home.views import Start
@@ -172,6 +171,7 @@ def allpreparestage():
         for crit in Criterion.objects.filter(Stage=ExeStg1.Stage):
             x = ExeCriterion(ExeStage=ExeStg1, Name=crit.Name).save()
 
+
 def sample(request):
     data = {'Message': 'Заполните всю необходимую информацию о пробе'}
     if request.POST.get('submit') == 'Вернуться назад':
@@ -299,7 +299,6 @@ def checkcrud(request):
     return HttpResponse(data)
 
 
-
 def addParametr(body):
     for param in body.get('Parameter'):
         updateExeParameter = ExeParameter.objects.filter(id=param.get('id'))
@@ -322,6 +321,7 @@ def addParametr(body):
                 newExePeriod = ExePeriod(Value=parametr1.get('value'), Time=parametr1.get('time'),
                                          ExeCalcParameter_id=Periodparam.get('id'))
                 newExePeriod.save()
+
 
 def check(request):
     if request.FILES.get('file') is not None:

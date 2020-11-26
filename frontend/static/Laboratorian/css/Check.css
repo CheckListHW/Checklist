@@ -293,7 +293,7 @@ hr {
 .podetap_list {
     display: flex;
     flex-direction: column;
-    max-height: 450px;/*Посчитать*/
+    max-height: calc(100vh - 280px);/*Посчитать*/
     width: 500px;
     min-width: 500px;
 
@@ -509,7 +509,7 @@ hr {
     border-radius: 5px;
     box-shadow: 3px 3px 4px 2px rgba(0,0,0,0.3);
 
-    max-height: 470px;
+    max-height: calc(100vh - 280px);
     overflow: auto;
 }
 
@@ -734,6 +734,7 @@ select :disabled.black{
     font-size: 12px;
 
     margin-right: 5px;
+    margin-bottom: 0px;
     padding: 0 5px;
 }
 
