@@ -224,59 +224,60 @@ new Vue ({
 
     methods: {
 
-        sleep: function (ms) {
+        sleep: function(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         },
 
-        submitFile(thisOwnerId) {
+        submitFile(thisOwnerId){
             let formData = new FormData();
             formData.append('file', this.file);
             formData.append('id', thisOwnerId);
-            axios.post('/lab/check/', formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    },
-                    type: 'addfile',
+            axios.post( '/lab/check/', formData,
+            {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                },
+                type: 'addfile',
 
-                }
-            ).then(function () {
+            }
+            ).then(function(){
                 console.log('SUCCESS!!');
             })
-                .catch(function () {
-                    console.log('FAILURE!!');
-                });
+            .catch(function(){
+                console.log('FAILURE!!');
+            });
         },
 
-        check_load: function (index) {
+        check_load: function(index) {
             Vue.set(this.first_picture_push, index, false);
         },
 
-        handleFileUpload(index, number, subnumber) {
-            if (number < 0) {
+        handleFileUpload(index, number, subnumber){
+            if(number < 0){
                 this.imageOwnerId = this.firstChilds[this.selected_vetvleniya][index].id
-            } else {
+            }
+            else {
                 this.imageOwnerId = this.variants_podetps[index][number][subnumber].id
             }
             this.file = this.$refs.file[0].files[0];
         },
 
-        change_visible: async function (index) {
+        change_visible: async function(index) {
             var true_index = this.parametrs_visible.indexOf(true);
 
-            if (true_index == index) {
+            if(true_index == index) {
                 Vue.set(this.parametrs_visible, index, !this.parametrs_visible[index]);
 
                 this.opening_p = false;
                 this.open_p = -1;
             } else {
-                if (this.opening_p || this.opening_p_p) {
-                    if (this.opening_p) {
+                if(this.opening_p || this.opening_p_p) {
+                    if(this.opening_p) {
                         Vue.set(this.parametrs_visible, this.open_p, false);
                         this.open_p = -1;
                     }
 
-                    if (this.opening_p_p) {
+                    if(this.opening_p_p) {
                         Vue.set(this.pod_podetap_parametrs_visibles[this.open_p_p.index][this.open_p_p.v_p_number], this.open_p_p.p_p_number, false);
 
                         this.opening_p_p = false;
@@ -299,8 +300,8 @@ new Vue ({
             }
         },
 
-        pod_podetap_change_visible: async function (index, number, subnumber) {
-            if (this.open_p_p.index == index && this.open_p_p.v_p_number == number && this.open_p_p.p_p_number == subnumber) {
+        pod_podetap_change_visible: async function(index, number, subnumber) {
+            if(this.open_p_p.index == index && this.open_p_p.v_p_number == number && this.open_p_p.p_p_number == subnumber) {
                 Vue.set(this.pod_podetap_parametrs_visibles[index][number], subnumber, false);
 
                 this.opening_p_p = false;
@@ -309,13 +310,13 @@ new Vue ({
                 this.open_p_p.v_p_number = -1;
                 this.open_p_p.p_p_number = -1;
             } else {
-                if (this.opening_p || this.opening_p_p) {
-                    if (this.opening_p) {
+                if(this.opening_p || this.opening_p_p) {
+                    if(this.opening_p) {
                         Vue.set(this.parametrs_visible, this.open_p, false);
                         this.open_p = -1;
                     }
 
-                    if (this.opening_p_p) {
+                    if(this.opening_p_p) {
                         Vue.set(this.pod_podetap_parametrs_visibles[this.open_p_p.index][this.open_p_p.v_p_number], this.open_p_p.p_p_number, false);
 
                         this.opening_p_p = false;
@@ -346,15 +347,15 @@ new Vue ({
             }
         },
 
-        fix_time: function (number, index, un_index) {
+        fix_time: function(number, index, un_index) {
             this.input_period_parametrs[number][index][un_index].time = this.current_times[number];
         },
 
-        podetap_fix_time: function (index, number, subnumber, sub_subnumber, un_index) {
+        podetap_fix_time: function(index, number, subnumber, sub_subnumber, un_index) {
             this.pod_podetaps_input_period_parametrs[index][number][subnumber][sub_subnumber][un_index].time = this.pod_podetaps_current_times[index][number][subnumber];
         },
 
-        add_period: function (number, index) {
+        add_period: function(number, index) {
             var element = {
                 value: null,
                 time: null,
@@ -362,7 +363,7 @@ new Vue ({
             this.input_period_parametrs[number][index].push(element);
         },
 
-        podetap_add_period: function (index, number, subnumber, sub_subnumber,) {
+        podetap_add_period: function(index, number, subnumber,sub_subnumber,) {
             var element = {
                 value: null,
                 time: null,
@@ -370,13 +371,13 @@ new Vue ({
             this.pod_podetaps_input_period_parametrs[index][number][subnumber][sub_subnumber].push(element);
         },
 
-        start_done: async function () {
-            if (this.vetvleniya_condition.length > 0) {
+        start_done: async function() {
+            if(this.vetvleniya_condition.length > 0) {
                 this.choose = !this.choose;
             }
         },
 
-        choose_main_vetvlenie: function () {
+        choose_main_vetvlenie:  function( ) {
 
             const vm = this;
             vm.SubChecks = [this.firstChilds[this.selected_vetvleniya].length]
@@ -384,8 +385,8 @@ new Vue ({
             this.podetaps = this.podetapsall[this.selected_vetvleniya]
 
             mainSubStages = GetChild(vm.SubStages.data, null)
-            axios.post('/lab/check/crud/', {
-                type: 'CheckSub',
+            axios.post('/lab/check/crud/',{
+                type:'CheckSub',
                 id: mainSubStages[this.selected_vetvleniya].id,
             })
 
@@ -393,7 +394,7 @@ new Vue ({
             this.firstChilds[this.selected_vetvleniya].forEach(function (firstChild, i) {
                 vm.povtors.push(GetReplay(firstChild, vm.Replays, vm.firstChilds[vm.selected_vetvleniya]))
                 vm.are_there_picture_add.push(firstChild.Picture)
-                vm.podetaps_time.push(firstChild.Duration * 60)
+                vm.podetaps_time.push(firstChild.Duration*60)
                 vm.podetaps_check.push(firstChild.Check)
                 vm.information.push({
                     risks: firstChild.Risks,
@@ -423,14 +424,14 @@ new Vue ({
                 let newGetCalcParam = GetCalcOrPeriodParam(vm.execalcparameters.data, firstChild.id, false)
                 if (newGetCalcParam != null) {
                     newGetCalcParam.forEach(function (param) {
-                        paramCalcExist = true
-                        newCalcParam.push({
-                            name: param.ParameterName,
-                            variable: param.VarName,
-                            measure: param.Unit,
-                            period: param.Period,
-                            id: param.id,
-                        })
+                            paramCalcExist = true
+                            newCalcParam.push({
+                                name: param.ParameterName,
+                                variable: param.VarName,
+                                measure: param.Unit,
+                                period: param.Period,
+                                id: param.id,
+                            })
                     })
                 }
                 vm.are_there_computed_parametrs.push(paramCalcExist)
@@ -440,29 +441,30 @@ new Vue ({
                 paramCalcExist = false
                 let newPeriodParam = []
                 let newGetPeriodParam = GetCalcOrPeriodParam(vm.execalcparameters.data, firstChild.id, true)
+                console.log(newGetPeriodParam)
 
                 if (newGetPeriodParam != null) {
-                    newGetPeriodParam.forEach(function (param, i) {
-                        paramCalcExist = true
-                        newPeriodParam.push({
-                            name: param.ParameterName,
-                            measure: param.Unit,
-                            id: param.id,
-                        })
+                    newGetPeriodParam.forEach(function (param, i ) {
+                            paramCalcExist = true
+                            newPeriodParam.push({
+                                name: param.ParameterName,
+                                measure: param.Unit,
+                                id: param.id,
+                            })
                     })
                 }
 
                 vm.are_there_period_parametrs.push(paramCalcExist)
                 vm.period_parametrs.push(newPeriodParam)
 
-                let secondChilds = (GetChild(vm.SubStages.data, firstChild.id))
+                let secondChilds =(GetChild(vm.SubStages.data, firstChild.id))
                 vm.SubStagesCondition.push(secondChilds)
                 let ParallelSubStagesObj = []
                 let podetap_condition = []
-                if (secondChilds.length > 1) {
+                if (secondChilds.length>1){
                     vm.SubChecks[i] = Array(secondChilds.length).fill([])
                     secondChilds.forEach(function (secondChild, i1) {
-                        if (secondChild.Check) {
+                        if (secondChild.Check){
                             vm.selectparallel[i] = i1
                         }
 
@@ -472,7 +474,7 @@ new Vue ({
                         vm.SubChecks[i][i1] = Array(thirdChilds.length).fill([])
                         thirdChilds.forEach(function (thirdChild, i2) {
                             vm.SubChecks[i][i1][i2] = thirdChild.Check
-                            let SubStage = {
+                            let SubStage =  {
                                 name: thirdChild.Name,
                                 id: thirdChild.id,
                                 params: GetReadyParam(vm.exeparameters.data, thirdChild.id),
@@ -481,7 +483,7 @@ new Vue ({
                                 period_params: GetReadyCalcOrPeriodParam(vm.execalcparameters.data,
                                     thirdChild.id, true),
                                 add_picture: thirdChild.Picture,
-                                experiment_times: thirdChild.Duration * 60,
+                                experiment_times: thirdChild.Duration*60,
                                 povtor: GetReplay(thirdChild, vm.Replays, thirdChilds),
                                 descriptions: {attention: thirdChild.Attention, risks: thirdChild.Risks},
                             }
@@ -495,16 +497,19 @@ new Vue ({
 
             })
 
+            console.log(vm.period_parametrs)
+            console.log(vm.computed_parametrs)
+            console.log(vm.period_parametrs)
 
             var len = this.podetaps.length;
 
-            for (i = 0; i < len; i++) {
+            for(i = 0; i < len; i++) {
                 this.all_computed_parametrs.push([]);
                 this.disabled.push(true);
                 this.plays.push(false);
                 this.first_play_push.push(true);
 
-                if (this.are_there_picture_add[i]) {
+                if(this.are_there_picture_add[i]) {
                     this.first_picture_push.push(true);
                 } else {
                     this.first_picture_push.push(false);
@@ -512,7 +517,7 @@ new Vue ({
 
                 this.parametrs_visible.push(false);
 
-                if (this.are_there_parametrs[i]) {
+                if(this.are_there_parametrs[i]) {
                     var array = [];
 
                     for (j = 0; j < this.plan_parametrs[i].length; j++) {
@@ -524,7 +529,7 @@ new Vue ({
                     this.fact_parametrs.push([]);
                 }
 
-                if (this.are_there_computed_parametrs[i]) {
+                if(this.are_there_computed_parametrs[i]) {
                     var array = [];
 
                     for (j = 0; j < this.computed_parametrs[i].length; j++) {
@@ -536,7 +541,7 @@ new Vue ({
                     this.input_computed_parametrs.push([]);
                 }
 
-                if (this.are_there_period_parametrs[i]) {
+                if(this.are_there_period_parametrs[i]) {
                     var array = [];
 
                     for (j = 0; j < this.period_parametrs[i].length; j++) {
@@ -575,95 +580,95 @@ new Vue ({
 
                 var variant_len = this.variants_podetps[i].length;
 
-                if (variant_len > 0) {
+                if(variant_len > 0) {
                     this.variants_vetvleniya_of_podetap[i].push(true);
-                    for (j = 1; j < variant_len; j++) {
+                    for(j = 1; j < variant_len; j++) {
                         this.variants_vetvleniya_of_podetap[i].push(false);
                     }
 
                     this.selected_vetvleniya_of_podetap[i].push[0];
 
-                    for (j = 0; j < this.variants_podetps[i][0].length; j++) {
+                    for(j = 0; j < this.variants_podetps[i][0].length; j++) {
                         this.pod_podetaps_disabled[i].push(true);
                     }
 
-                    for (j = 0; j < variant_len; j++) {
+                    for(j = 0; j < variant_len; j++) {
                         var array = [];
 
-                        for (k = 0; k < this.variants_podetps[i][j].length; k++) {
+                        for(k = 0; k < this.variants_podetps[i][j].length; k++) {
                             array.push(false);
                         }
 
                         this.pod_podetap_parametrs_visibles[i].push(array);
                     }
 
-                    for (j = 0; j < variant_len; j++) {
+                    for(j = 0; j < variant_len; j++) {
                         var array = [];
 
-                        for (k = 0; k < this.variants_podetps[i][j].length; k++) {
+                        for(k = 0; k < this.variants_podetps[i][j].length; k++) {
                             array.push(null);
                         }
 
                         this.pod_podetap_timers[i].push(array);
                     }
 
-                    for (j = 0; j < variant_len; j++) {
+                    for(j = 0; j < variant_len; j++) {
                         var array = [];
 
-                        for (k = 0; k < this.variants_podetps[i][j].length; k++) {
+                        for(k = 0; k < this.variants_podetps[i][j].length; k++) {
                             array.push(false);
                         }
 
                         this.pod_podetap_plays[i].push(array);
                     }
 
-                    for (j = 0; j < variant_len; j++) {
+                    for(j = 0; j < variant_len; j++) {
                         var array = [];
 
-                        for (k = 0; k < this.variants_podetps[i][j].length; k++) {
+                        for(k = 0; k < this.variants_podetps[i][j].length; k++) {
                             array.push(true);
                         }
 
                         this.pod_podetap_first_play_push[i].push(array);
                     }
 
-                    for (j = 0; j < variant_len; j++) {
+                    for(j = 0; j < variant_len; j++) {
                         var array = [];
 
-                        for (k = 0; k < this.variants_podetps[i][j].length; k++) {
+                        for(k = 0; k < this.variants_podetps[i][j].length; k++) {
                             array.push(false);
                         }
 
                         this.pod_podetap_first_picture_push[i].push(array);
                     }
 
-                    for (j = 0; j < variant_len; j++) {
+                    for(j = 0; j < variant_len; j++) {
                         var array = [];
 
-                        for (k = 0; k < this.variants_podetps[i][j].length; k++) {
+                        for(k = 0; k < this.variants_podetps[i][j].length; k++) {
                             array.push(false);
                         }
 
                         this.pod_podetaps_check[i].push(array);
                     }
 
-                    for (j = 0; j < variant_len; j++) {
+                    for(j = 0; j < variant_len; j++) {
                         var array = [];
 
-                        for (k = 0; k < this.variants_podetps[i][j].length; k++) {
+                        for(k = 0; k < this.variants_podetps[i][j].length; k++) {
                             array.push(0);
                         }
 
                         this.pod_podetaps_current_times[i].push(array);
                     }
 
-                    for (j = 0; j < variant_len; j++) {
+                    for(j = 0; j < variant_len; j++) {
                         var array = [];
 
-                        for (k = 0; k < this.variants_podetps[i][j].length; k++) {
+                        for(k = 0; k < this.variants_podetps[i][j].length; k++) {
                             var sub_array = [];
 
-                            for (l = 0; l < this.variants_podetps[i][j][k].params.length; l++) {
+                            for(l = 0; l < this.variants_podetps[i][j][k].params.length; l++) {
                                 sub_array.push("");
                             }
 
@@ -673,13 +678,13 @@ new Vue ({
                         this.pod_podetaps_fact_parametrs[i].push(array);
                     }
 
-                    for (j = 0; j < variant_len; j++) {
+                    for(j = 0; j < variant_len; j++) {
                         var array = [];
 
-                        for (k = 0; k < this.variants_podetps[i][j].length; k++) {
+                        for(k = 0; k < this.variants_podetps[i][j].length; k++) {
                             var sub_array = [];
 
-                            for (l = 0; l < this.variants_podetps[i][j][k].computed_params.length; l++) {
+                            for(l = 0; l < this.variants_podetps[i][j][k].computed_params.length; l++) {
                                 sub_array.push("");
                             }
 
@@ -689,13 +694,13 @@ new Vue ({
                         this.pod_podetaps_input_computed_parametrs[i].push(array);
                     }
 
-                    for (j = 0; j < variant_len; j++) {
+                    for(j = 0; j < variant_len; j++) {
                         var array = [];
 
-                        for (k = 0; k < this.variants_podetps[i][j].length; k++) {
+                        for(k = 0; k < this.variants_podetps[i][j].length; k++) {
                             var sub_array = [];
 
-                            for (l = 0; l < this.variants_podetps[i][j][k].period_params.length; l++) {
+                            for(l = 0; l < this.variants_podetps[i][j][k].period_params.length; l++) {
                                 var elements = [
                                     {
                                         value: null,
@@ -725,33 +730,35 @@ new Vue ({
             this.open_p = 0;
 
 
+
         },
 
-        startTimer: function (index) {
+        startTimer: function(index) {
             this.timers[index] = setInterval(() => {
-                if (this.podetaps_time[index].time < this.current_times[index]) {
-                    if (this.current_times[index] % 2 == 0) {
+                if (this.podetaps_time[index].time < this.current_times[index]){
+                    if (this.current_times[index] % 2 == 0){
                         document.title = "Время"
-                    } else {
+                    }
+                    else {
                         document.title = "Вышло"
                     }
                 }
-                Vue.set(this.current_times, index, this.current_times[index] + 1);
+                Vue.set(this.current_times, index, this.current_times[index]+1);
             }, 1000)
         },
 
-        stopTimer: function (index) {
+        stopTimer: function(index) {
             clearTimeout(this.timers[index])
         },
 
-        start: function (index) {
+        start: function(index) {
             Vue.set(this.plays, index, !this.plays[index]);
             Vue.set(this.first_play_push, index, false);
 
             this.startTimer(index);
         },
 
-        stop: function (index) {
+        stop: function(index) {
             Vue.set(this.plays, index, !this.plays[index]);
 
             this.stopTimer(index);
@@ -759,13 +766,13 @@ new Vue ({
 
         //POVTOR
 
-        povtor_ok: function () {
+        povtor_ok: function() {
             this.povtor_etaps.push(this.povtor_index);
 
-            for (var i = 0; i < this.povtor_etaps.length; i++) {
+            for(var i = 0; i < this.povtor_etaps.length; i++) {
                 var ind = this.povtor_etaps[i];
 
-                if (i > 0) {
+                if(i > 0) {
                     Vue.set(this.disabled, ind, true);
                 }
 
@@ -774,13 +781,13 @@ new Vue ({
                 Vue.set(this.plays, ind, false);
                 Vue.set(this.first_play_push, ind, true);
 
-                if (this.are_there_picture_add[ind]) {
+                if(this.are_there_picture_add[ind]) {
                     Vue.set(this.first_picture_push, ind, true);
                 } else {
                     Vue.set(this.first_picture_push, ind, false);
                 }
 
-                if (this.are_there_parametrs[ind]) {
+                if(this.are_there_parametrs[ind]) {
                     var array = [];
 
                     for (j = 0; j < this.plan_parametrs[ind].length; j++) {
@@ -792,14 +799,14 @@ new Vue ({
                     Vue.set(this.fact_parametrs, ind, []);
                 }
 
-                if (this.are_there_computed_parametrs[ind]) {
+                if(this.are_there_computed_parametrs[ind]) {
                     var array = [];
 
                     for (j = 0; j < this.computed_parametrs[ind].length; j++) {
                         array.push("");
                     }
 
-                    for (var k = 0; k < this.input_computed_parametrs[ind].length; k++) {
+                    for(var k = 0; k < this.input_computed_parametrs[ind].length; k++) {
                         this.all_computed_parametrs[ind].push(
                             {
                                 name: this.computed_parametrs[ind][k].name,
@@ -813,7 +820,7 @@ new Vue ({
                     Vue.set(this.input_computed_parametrs, ind, []);
                 }
 
-                if (this.are_there_period_parametrs[ind]) {
+                if(this.are_there_period_parametrs[ind]) {
                     var array = [];
 
                     for (j = 0; j < this.period_parametrs[ind].length; j++) {
@@ -846,14 +853,14 @@ new Vue ({
             this.povtor_count = this.povtor_count + 1;
         },
 
-        povtor_no: function () {
+        povtor_no: function() {
             this.povtor = false;
             this.povtor_message = "";
             this.povtor_etaps = [];
             this.povtor_count = 0;
 
-            if (this.variants_podetps[this.povtor_index].length == 0) {
-                if (this.povtor_index < this.podetaps.length) {
+            if(this.variants_podetps[this.povtor_index].length == 0) {
+                if(this.povtor_index < this.podetaps.length) {
                     Vue.set(this.disabled, this.povtor_index + 1, false);
                     Vue.set(this.parametrs_visible, this.povtor_index + 1, true);
                     this.active_podetap = this.active_podetap + 1;
@@ -873,10 +880,11 @@ new Vue ({
 
         //Добавить OLD
 
-        povtor_count_message: function () {
-            if (this.povtor_count == 0) {
+        povtor_count_message: function() {
+            if(this.povtor_count == 0) {
                 return "";
-            } else {
+            }
+            else {
                 return " (Повторов - " + this.povtor_count + ")";
             }
         },
@@ -885,13 +893,13 @@ new Vue ({
 
         //POD_POD_POVTOR
 
-        podetap_povtor_ok: function () {
+        podetap_povtor_ok: function() {
             this.povtor_etaps.push(this.povtor_index);
 
-            for (var i = 0; i < this.povtor_etaps.length; i++) {
+            for(var i = 0; i < this.povtor_etaps.length; i++) {
                 var ind = this.povtor_etaps[i];
 
-                if (i > 0) {
+                if(i > 0) {
                     Vue.set(this.pod_podetaps_disabled[this.open_p_p.index], ind, true);
                 }
 
@@ -899,7 +907,7 @@ new Vue ({
                 Vue.set(this.pod_podetap_plays[this.open_p_p.index][this.open_p_p.v_p_number], ind, false);
                 Vue.set(this.pod_podetap_first_play_push[this.open_p_p.index][this.open_p_p.v_p_number], ind, true);
 
-                if (this.variants_podetps[this.open_p_p.index][this.open_p_p.v_p_number][ind].add_picture) {
+                if(this.variants_podetps[this.open_p_p.index][this.open_p_p.v_p_number][ind].add_picture) {
                     Vue.set(this.pod_podetap_first_picture_push[this.open_p_p.index][this.open_p_p.v_p_number], ind, true);
                 } else {
                     Vue.set(this.pod_podetap_first_picture_push[this.open_p_p.index][this.open_p_p.v_p_number], ind, false);
@@ -907,7 +915,7 @@ new Vue ({
 
                 var params_len = this.variants_podetps[this.open_p_p.index][this.open_p_p.v_p_number][ind].params.length;
 
-                if (params_len > 0) {
+                if(params_len > 0) {
                     var array = [];
 
                     for (j = 0; j < params_len; j++) {
@@ -921,14 +929,14 @@ new Vue ({
 
                 var comp_params_len = this.variants_podetps[this.open_p_p.index][this.open_p_p.v_p_number][ind].computed_params.length;
 
-                if (comp_params_len > 0) {
+                if(comp_params_len > 0) {
                     var array = [];
 
                     for (j = 0; j < comp_params_len; j++) {
                         array.push("");
                     }
 
-                    for (var k = 0; k < this.pod_podetaps_input_computed_parametrs[this.open_p_p.index][this.open_p_p.v_p_number][ind].length; k++) {
+                    for(var k = 0; k < this.pod_podetaps_input_computed_parametrs[this.open_p_p.index][this.open_p_p.v_p_number][ind].length; k++) {
                         this.all_computed_parametrs[ind].push(
                             {
                                 name: this.variants_podetps[this.open_p_p.index][this.open_p_p.v_p_number][ind].computed_params[k].name,
@@ -944,7 +952,7 @@ new Vue ({
 
                 var period_params_len = this.variants_podetps[this.open_p_p.index][this.open_p_p.v_p_number][ind].period_params.length;
 
-                if (period_params_len > 0) {
+                if(period_params_len > 0) {
                     var array = [];
 
                     for (j = 0; j < period_params_len; j++) {
@@ -977,13 +985,13 @@ new Vue ({
             this.povtor_count = this.povtor_count + 1;
         },
 
-        podetap_povtor_no: function () {
+        podetap_povtor_no: function() {
             this.podetap_povtor = false;
             this.povtor_message = "";
             this.povtor_etaps = [];
             this.povtor_count = 0;
 
-            if (this.povtor_index == (this.variants_podetps[this.open_p_p.index][this.open_p_p.v_p_number].length - 1)) {
+            if(this.povtor_index == (this.variants_podetps[this.open_p_p.index][this.open_p_p.v_p_number].length - 1)) {
                 Vue.set(this.disabled, this.open_p_p.index + 1, false);
                 Vue.set(this.parametrs_visible, this.open_p_p.index + 1, true);
                 this.active_podetap = this.active_podetap + 1;
@@ -1001,7 +1009,7 @@ new Vue ({
                 Vue.set(this.pod_podetaps_disabled[this.open_p_p.index], this.povtor_index + 1, false);
                 Vue.set(this.pod_podetap_parametrs_visibles[this.open_p_p.index][this.open_p_p.v_p_number], this.povtor_index + 1, true);
                 this.active_pod_podetap = this.active_pod_podetap + 1;
-                this.open_p_p.p_p_number = this.open_p_p.p_p_number + 1;
+                this.open_p_p.p_p_number = this.open_p_p.p_p_number +1;
             }
 
             this.povtor_index = -1;
@@ -1009,80 +1017,82 @@ new Vue ({
 
         //--------------------------------------
 
-        postParametr: async function (index, number, subnumber) {
+        postParametr: async  function(index, number, subnumber){
             const vm = this;
 
             let thisOwnerId;
-            if (number < 0) thisOwnerId = this.firstChilds[this.selected_vetvleniya][index].id
+            if(number < 0) thisOwnerId = this.firstChilds[this.selected_vetvleniya][index].id
             else thisOwnerId = this.variants_podetps[index][number][subnumber].id
 
             if (this.imageOwnerId == thisOwnerId) this.submitFile(thisOwnerId)
-
 
             let parametrs = [],
                 calcparametrs = [],
                 periodparametrs = [],
                 substage = this.firstChilds[this.selected_vetvleniya][index],
-                planParametrs = vm.plan_parametrs[index],
+                planParametrs =  vm.plan_parametrs[index],
                 planCalcParametrs = vm.computed_parametrs[index],
                 planPeriodParametrs = vm.period_parametrs[index],
                 factParametrs = vm.fact_parametrs[index],
                 factCalcParametrs = vm.input_computed_parametrs[index],
-                factPeriodParametrs = vm.input_period_parametrs[index];
+                factPeriodParametrs = vm.input_period_parametrs[index],
+                Runtime = vm.current_times[index];
 
-            if (number >= 0) {
+            if (number >= 0){
                 substage = vm.variants_podetps[index][number][subnumber]
                 planParametrs = vm.variants_podetps[index][number][subnumber].params,
-                    planCalcParametrs = vm.variants_podetps[index][number][subnumber].computed_params,
-                    planPeriodParametrs = vm.variants_podetps[index][number][subnumber].period_params,
-                    factParametrs = vm.pod_podetaps_fact_parametrs[index][number][subnumber],
-                    factCalcParametrs = vm.pod_podetaps_input_computed_parametrs[index][number][subnumber],
-                    factPeriodParametrs = vm.pod_podetaps_input_period_parametrs[index][number][subnumber];
+                planCalcParametrs = vm.variants_podetps[index][number][subnumber].computed_params,
+                planPeriodParametrs = vm.variants_podetps[index][number][subnumber].period_params,
+                factParametrs = vm.pod_podetaps_fact_parametrs[index][number][subnumber],
+                factCalcParametrs = vm.pod_podetaps_input_computed_parametrs[index][number][subnumber],
+                factPeriodParametrs = vm.pod_podetaps_input_period_parametrs[index][number][subnumber],
+                Runtime = vm.pod_podetaps_current_times[index][number][subnumber];
             }
 
             factParametrs.forEach(function (paramSubsub, i) {
-                if (planParametrs[i] != null & paramSubsub != '') {
+                if (planParametrs[i] != null & paramSubsub != ''){
                     parametrs.push({
                         parametr: paramSubsub,
-                        id: planParametrs[i].id,
+                        id:planParametrs[i].id,
                     })
                 }
             })
 
             factCalcParametrs.forEach(function (paramSubsub, i) {
-                if (planCalcParametrs[i] != null & paramSubsub != '') {
+                if (planCalcParametrs[i] != null & paramSubsub != ''){
                     calcparametrs.push({
                         parametr: paramSubsub,
-                        id: planCalcParametrs[i].id,
+                        id:planCalcParametrs[i].id,
                     })
                 }
             })
 
-            factPeriodParametrs.forEach(function (subparam, i) {
-                if (planPeriodParametrs[i] != null) {
-                    if (subparam[0].value != null) {
+            factPeriodParametrs.forEach(function (subparam,i) {
+                if (planPeriodParametrs[i] != null){
+                    if (subparam[0].value != null){
                         periodparametrs.push({
                             parametr: subparam,
-                            id: planPeriodParametrs[i].id,
+                            id:planPeriodParametrs[i].id,
                         })
                     }
                 }
             })
 
-            await axios.post('/lab/check/crud/', {
+            await axios.post('/lab/check/crud/',{
                 type: 'CheckSub',
                 id: substage.id,
                 addParam: true,
                 Parameter: parametrs,
                 CalcParameter: calcparametrs,
                 Period: periodparametrs,
-            }).then(response => {
+                Runtime: Runtime,
+            }).then(response =>{
                 console.log(response.data)
             })
         },
 
 
-        check_pressed: async function (index, old) {
+        check_pressed: async function(index, old) {
             const vm = this;
 
             if (!old) {
@@ -1097,63 +1107,63 @@ new Vue ({
                 await this.sleep(1000);
             }
             //POVTOR проверка есть ли после этого этапа повторение
-            if (this.povtors[index].check) {
-                if (!old) {
-                    this.povtor = true;
-                    this.povtor_message = this.povtors[index].message;
-                    this.povtor_index = index;
+            if(this.povtors[index].check) {
+                this.povtor = true;
+                this.povtor_message = this.povtors[index].message;
+                this.povtor_index = index;
 
-                    for (var i = 0; i < this.povtors[index].povtor_podetaps.length; i++) {
-                        this.povtor_etaps.push(this.povtors[index].povtor_podetaps[i].number)
-                    }
-                    if (old) {
-                        this.povtor_no()
-                    }
-                } else {
-                    if (this.variants_podetps[index].length == 0) {
-                        if (index < this.podetaps.length) {
-                            Vue.set(this.disabled, index + 1, false);
-                            if (!old) {
-                                Vue.set(this.parametrs_visible, index + 1, true);
-
-                            }
-                            this.active_podetap = this.active_podetap + 1;
-                            this.open_p = index + 1;
-                        } else {
-                            this.opening_p = false;
-                            this.open_p = -1
+                for (var i = 0; i < this.povtors[index].povtor_podetaps.length; i++) {
+                    this.povtor_etaps.push(this.povtors[index].povtor_podetaps[i].number)
+                }
+                if (old) {
+                    this.povtor_no()
+                }
+            }
+            else
+            {
+                if(this.variants_podetps[index].length == 0) {
+                    if(index < this.podetaps.length) {
+                        Vue.set(this.disabled, index + 1, false);
+                        if (!old){
+                            Vue.set(this.parametrs_visible, index + 1, true);
                         }
-
+                        this.active_podetap = this.active_podetap + 1;
+                        this.open_p = index + 1;
                     } else {
-                        this.selected_vetvleniya_of_podetap[index] = this.selectparallel[index]
-                        this.active_pod_podetap = 0;
-                        if (!old) {
-                            await this.sleep(1000);
-                        }
-                        Vue.set(this.vetvleniya_condition_visible, index, true);
-                        this.active_pod_podetap = 0;
-                        if (old) {
-                            this.close(index, old)
-                        } else {
-                            Vue.set(this.vetvleniya_condition_visible, index, true);
-                        }
-                        close()
-
-                        let x = this.selectparallel[index]
-                        vm.SubChecks[index][this.selectparallel[index]].forEach(await function (item, i) {
-                            if (item) {
-                                vm.pod_podetaps_check_pressed(index, x, i, old)
-                            }
-                        })
+                        this.opening_p = false;
+                        this.open_p = -1
                     }
                 }
+                else {
+                    this.selected_vetvleniya_of_podetap[index] = this.selectparallel[index]
+                    this.active_pod_podetap = 0;
+                    if (!old) {
+                        await this.sleep(1000);
+                    }
+                    Vue.set(this.vetvleniya_condition_visible, index, true);
+                    this.active_pod_podetap = 0;
+                    if (old){
+                        this.close(index, old)
+                    }
+                    else{
+                        Vue.set(this.vetvleniya_condition_visible, index, true);
+                    }
+                    close()
 
+                    let x = this.selectparallel[index]
+                    vm.SubChecks[index][this.selectparallel[index]].forEach(await function (item, i) {
+                        if (item){
+                           vm.pod_podetaps_check_pressed(index, x, i, old)
+                        }
+                    })
+                }
             }
+
         },
 
 
-        pod_podetaps_check_pressed: async function (index, number, subnumber, old) {
-            const vm = this;
+        pod_podetaps_check_pressed: async function(index, number, subnumber, old) {
+            const vm =this;
 
             if (!old) {
                 await vm.postParametr(index, number, subnumber)
@@ -1170,15 +1180,15 @@ new Vue ({
             array = this.pod_podetap_parametrs_visibles[index][number];
             Vue.set(array, subnumber, false);
 
-            if (!old) {
-                await this.sleep(1000);
-            }
-            if (this.variants_podetps[index][number][subnumber].povtor.check) {
+             if (!old) {
+                        await this.sleep(1000);
+                    }
+            if(this.variants_podetps[index][number][subnumber].povtor.check) {
                 this.podetap_povtor = true;
                 this.povtor_message = this.variants_podetps[index][number][subnumber].povtor.message;
                 this.povtor_index = subnumber;
 
-                for (var i = 0; i < this.variants_podetps[index][number][subnumber].povtor.povtor_podetaps.length; i++) {
+                for(var i = 0; i < this.variants_podetps[index][number][subnumber].povtor.povtor_podetaps.length; i++) {
                     this.povtor_etaps.push(this.variants_podetps[index][number][subnumber].povtor.povtor_podetaps[i].number)
                 }
             } else {
@@ -1208,8 +1218,8 @@ new Vue ({
         },
 
 
-        pod_podetaps_are_there_parametrs: function (index, number, subnumber) {
-            if (this.variants_podetps[index][number][subnumber].params.length > 0) {
+        pod_podetaps_are_there_parametrs: function(index, number, subnumber) {
+            if(this.variants_podetps[index][number][subnumber].params.length > 0) {
                 return true;
             } else {
                 return false;
@@ -1217,41 +1227,44 @@ new Vue ({
         },
 
 
-        pod_podetaps_are_there_computed_parametrs: function (index, number, subnumber) {
-            if (this.variants_podetps[index][number][subnumber].computed_params.length > 0) {
+        pod_podetaps_are_there_computed_parametrs: function(index, number, subnumber) {
+            if(this.variants_podetps[index][number][subnumber].computed_params.length > 0) {
                 return true;
             } else {
                 return false;
             }
         },
 
-        pod_podetaps_are_there_period_parametrs: function (index, number, subnumber) {
-            if (this.variants_podetps[index][number][subnumber].period_params.length > 0) {
+        pod_podetaps_are_there_period_parametrs: function(index, number, subnumber) {
+            if(this.variants_podetps[index][number][subnumber].period_params.length > 0) {
                 return true;
             } else {
                 return false;
             }
         },
 
-        pod_podetap_startTimer: function (index, number, subnumber) {
+        pod_podetap_startTimer: function(index, number, subnumber) {
+            console.log('this.pod_podetap_timers[index][number][subnumber]')
+            console.log(this.pod_podetaps_current_times[index][number])
             this.pod_podetap_timers[index][number][subnumber] = setInterval(() => {
-                if (this.podetaps_time[index][number][subnumber].time < this.current_times[index][number][subnumber]) {
-                    if (this.current_times[index] % 2 == 0) {
+                if (this.variants_podetps[index][number][subnumber].experiment_times < this.pod_podetaps_current_times[index][number][subnumber]){
+                    if (this.current_times[index] % 2 == 0){
                         document.title = "Время"
-                    } else {
+                    }
+                    else {
                         document.title = "Вышло"
                     }
                 }
                 var array = this.pod_podetaps_current_times[index][number];
-                Vue.set(array, subnumber, array[subnumber] + 1);
+                Vue.set(array, subnumber, array[subnumber]+1);
             }, 1000)
         },
 
-        pod_podetap_stopTimer: function (index, number, subnumber) {
+        pod_podetap_stopTimer: function(index, number, subnumber) {
             clearTimeout(this.pod_podetap_timers[index][number][subnumber])
         },
 
-        pod_podetap_start: function (index, number, subnumber) {
+        pod_podetap_start: function(index, number, subnumber) {
             var array = this.pod_podetap_plays[index][number];
             Vue.set(array, subnumber, !array[subnumber]);
 
@@ -1261,27 +1274,28 @@ new Vue ({
             this.pod_podetap_startTimer(index, number, subnumber);
         },
 
-        pod_podetap_stop: function (index, number, subnumber) {
+        pod_podetap_stop: function(index, number, subnumber) {
             var array = this.pod_podetap_plays[index][number];
             Vue.set(array, subnumber, !array[subnumber]);
 
             this.pod_podetap_stopTimer(index, number, subnumber);
         },
 
-        pod_podetap_check_load: function (index, number, subnumber) {
+        pod_podetap_check_load: function(index, number, subnumber) {
             var array = this.pod_podetap_first_picture_push[index][number];
             Vue.set(array, subnumber, false);
         },
 
 
-        close: function (index, old) {
+
+        close: function(index, old) {
 
             let SubStageCheck_id = this.firstChilds[this.selected_vetvleniya][index].id;
-            let secondChilds = (GetChild(this.SubStages.data, SubStageCheck_id))
+            let secondChilds =(GetChild(this.SubStages.data, SubStageCheck_id))
 
-            if (!old) {
-                axios.post('/lab/check/crud/', {
-                    type: 'CheckSub',
+            if (!old){
+                axios.post('/lab/check/crud/',{
+                    type:'CheckSub',
                     id: secondChilds[this.selected_vetvleniya_of_podetap[index]].id,
                 })
             }
@@ -1295,7 +1309,7 @@ new Vue ({
             //Разблокируем первый подэтап в ветвлении
             this.pod_podetaps_disabled[index].splice(0, this.pod_podetaps_disabled[index].length)
 
-            for (var i = 0; i < this.variants_podetps[index][this.selected_vetvleniya_of_podetap[index]].length; i++) {
+            for(var i = 0; i < this.variants_podetps[index][this.selected_vetvleniya_of_podetap[index]].length; i++) {
                 this.pod_podetaps_disabled[index].push(true);
             }
 
@@ -1319,29 +1333,30 @@ new Vue ({
             this.btn_disabled = true;
         },
 
-        inf: function (value) {
-            if (value == "") {
+        inf: function(value) {
+            if(value == "") {
                 return "Отсутствует";
             } else {
                 return value;
             }
         },
 
-        Stages:async function () {
-            ExeStageData = await axios.get("/api/exestage/?id=" + this.ExeStage)
-            ExeExperimentData = await axios.get("/api/exeexperiment/?id=" + (ExeStageData.data[0].ExeExperiment))
+        Stages:async function() {
+            ExeStageData = await axios.get("/api/exestage/?id="+this.ExeStage)
+            ExeExperimentData = await axios.get("/api/exeexperiment/?id="+(ExeStageData.data[0].ExeExperiment))
             window.location.href = '/lab/stages/?Sample=' + ExeExperimentData.data[0].Samples
 
         },
 
-        Preparatory:async function () {
-                PreparatoryStages = await axios.get("/api/exeparagraph/?ExeStage=" + this.ExeStage)
-                if (PreparatoryStages.data.length > 1) {
-                    window.location.href = '/lab/preparatory/?ExeStage=' + this.ExeStage;
-                } else {
-                    window.location.href = ('/lab/stuffs/?ExeStage=' + this.ExeStage);
-                }
-            },
+        Preparatory:async function() {
+            PreparatoryStages = await axios.get("/api/exeparagraph/?ExeStage="+this.ExeStage)
+            if (PreparatoryStages.data.length > 1){
+                window.location.href = '/lab/preparatory/?ExeStage=' + this.ExeStage;
+            }
+            else{
+                window.location.href = ('/lab/stuffs/?ExeStage=' + this.ExeStage);
+            }
+        },
     },
 
     components: {
@@ -1414,6 +1429,7 @@ new Vue ({
             this.choose_main_vetvlenie();
         }
 
+        console.log(vm.SubChecks)
 
         this.firstChilds[this.selected_vetvleniya].forEach(function (firstChild, i) {
 

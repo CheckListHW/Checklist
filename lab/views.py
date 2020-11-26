@@ -271,6 +271,8 @@ def preparatorycrud(request):
             ExeStageParams = body.get("planparams")
             SubStageCheck = ExeSubStage.objects.filter(id=body.get('id'))[0]
             SubStageCheck.Check = True
+            print(body.get)
+            SubStageCheck.Runtime = body.get("Runtime")
             SubStageCheck.save()
             for StageParam in range(len(StageParams)):
                 for SubStageParams in range(len(ExeStageParams[StageParam])):
@@ -292,6 +294,8 @@ def checkcrud(request):
         ExeSubStages = ExeSubStage.objects.filter(id=body.get('id'))
         if len(ExeSubStages) > 0:
             ExeSubStages[0].Check = True
+            print(body)
+            ExeSubStages[0].Runtime = body.get("Runtime")
             ExeSubStages[0].save()
             if body.get('addParam'):
                 addParametr(body)

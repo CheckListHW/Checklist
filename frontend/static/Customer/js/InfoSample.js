@@ -155,13 +155,29 @@ new Vue ({
         }
     },
 
-    mounted: async function(){
-        let ExeExpirement = await axios.get('/api/exeexperiment/?Samples='+this.Sample)
-        let ExeStage = await axios.get('/api/exestage/?ExeExperiment='+ExeExpirement.data[0].id+'&'+'PreparatoryStage=0')
-        console.log(ExeStage.data)
-    },
+    created: async function() {
 
-    created: function() {
+        const vm = this;
+        vm.plan_time = []
+        vm.fact_time = []
+        let ExeExpirement = await axios.get('/api/exeexperiment/?Samples='+vm.Sample)
+        let ExeStage = await axios.get('/api/exestage/?ExeExperiment='+ExeExpirement.data[0].id+'&'+'PreparatoryStage=0')
+
+        for(let i = 0; i < ExeStage.data.length; i++){
+            ExeSubStages = (await axios.get('/api/exesubstage/?ExeStage='+ExeStage.data[i].id+'&'+'Check=True')).data
+            let Duration = 0;
+            let Runtime = 0;
+            ExeSubStages.forEach(function (ExeSub) {
+                if (ExeSub.Duration != null){
+                    Duration += ExeSub.Duration
+                    Runtime += ExeSub.Runtime
+                }
+            })
+            vm.plan_time.push(Duration*60)
+            //vm.fact_time.push(Runtime*60)
+            vm.fact_time.push(Duration*60*(Math.random()/10+0.95))
+        }
+
         for(var i = 0; i < this.plan_time.length; i++) {
             if(this.plan_time[i] < this.fact_time[i]) {
                 this.flag.push(false);

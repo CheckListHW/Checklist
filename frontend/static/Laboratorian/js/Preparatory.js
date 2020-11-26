@@ -424,10 +424,10 @@ axios.get('/api/execalcparameters/?ExeStage=' + JSON.parse(document.getElementBy
                             finish: "SubStage",
                             id: otherthings[number].exesubstages[index + 1].id,
                             PrepareStage: this.MainStageid,
+                            Runtime: this.current_times[number][index],
+                            Duartion: this.podetaps_time[number][index],
                             params: this.fact_parametrs,
                             planparams: this.plan_parametrs,
-                            time1: this.current_times,
-                            time2: this.podetaps_time,
                         })
                     this.stopTimer(number, index);
                     Vue.set(this.plays[number], index, false);
