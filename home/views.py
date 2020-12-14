@@ -2,7 +2,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from rest_framework.utils import json
+
+from lab.models import Samples, ExeExperiment, ExeStage, ExeSubStage
 from .models import *
+from openpyxl import Workbook
+
 
 
 def experiments(request):
@@ -58,8 +62,27 @@ def stages(request):
     data = {'Experiment': expid, 'expname': expname}
     return checkauth(request, 'Editor/Stages.html', data)
 
+def sqlite_to_xlsx():
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Worksheet Title"
+    column_list = ['id', 'Number', 'Name', 'Duration', 'Runtime', 'Risks',  'Attention',
+                   'Picture', 'Check', 'ExeStage', 'Sample']
+    ws.append(column_list)
+    for sample in Samples.objects.all():
+        for exeExperiment in ExeExperiment.objects.filter(Samples=sample):
+            for exeStage in ExeStage.objects.filter(ExeExperiment=exeExperiment):
+                for exeSubstage in ExeSubStage.objects.filter(ExeStage=exeStage).exclude(Runtime=None):
+                    row = [exeSubstage.id, exeSubstage.Number, exeSubstage.Name, exeSubstage.Duration,
+                           exeSubstage.Runtime, exeSubstage.Risks, exeSubstage.Attention, exeSubstage.Picture,
+                           exeSubstage.Check, exeStage.Name, sample.LabCode]
+                    ws.append(row)
+    wb.save("Runtime.xlsx")
+    return
+
 
 def Start(request):
+    #sqlite_to_xlsx()
     user = request.user
     if request.method == 'POST' and user.is_authenticated == False:
         username = request.POST.get('username', '')

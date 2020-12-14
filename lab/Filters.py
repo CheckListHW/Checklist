@@ -166,10 +166,11 @@ class ExeSubStagesFilter(filters.FilterSet):
     Check = filters.BooleanFilter()
     Name = filters.CharFilter()
     ExeStage = filters.NumberFilter()
+    SubStage = filters.NumberFilter()
 
     class Meta:
         model = ExeSubStage
-        fields = ['id', 'Check', 'Name', 'ExeStage', 'Number']
+        fields = ['id', 'Check', 'Name', 'ExeStage', 'Number', 'SubStage']
 
 
 class ExeSubStagesListView(viewsets.ModelViewSet):

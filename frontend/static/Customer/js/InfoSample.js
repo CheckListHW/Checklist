@@ -22,6 +22,10 @@ new Vue ({
     },
 
     methods: {
+        back: function(){
+            window.location.href = '/customer/samples/';
+        },
+
         sleep: function(ms) {
           return new Promise(resolve => setTimeout(resolve, ms));
         },
@@ -167,19 +171,64 @@ new Vue ({
             ExeSubStages = (await axios.get('/api/exesubstage/?ExeStage='+ExeStage.data[i].id+'&'+'Check=True')).data
             let Duration = 0;
             let Runtime = 0;
-            ExeSubStages.forEach(function (ExeSub) {
-                if (ExeSub.Duration != null){
-                    Duration += ExeSub.Duration
-                    Runtime += ExeSub.Runtime
+            let densitySubStage = null;
+            for(let i = 0; i < ExeSubStages.length; i++){
+
+                if (ExeSubStages[i].Duration != null){
+                    Duration += ExeSubStages[i].Duration
+                    Runtime += ExeSubStages[i].Runtime
                 }
-            })
+
+                if (ExeSubStages[i].SubStage == 830 || ExeSubStages[i].SubStage == 868){
+                    let density = (await axios.get('/api/execalcparameters/?ExeSubStage='+ExeSubStages[i].id)).data
+                    vm.density_value = density[0].Value
+                    console.log(density)
+                    console.log(vm.density_value)
+                }
+
+                if (ExeSubStages[i].SubStage == 1048){
+                    let velocity = (await axios.get('/api/execalcparameters/?ExeSubStage='+ExeSubStages[i].id)).data
+                    vm.velocity_value = velocity[0].Value
+                    console.log(velocity)
+                    console.log(vm.density_value)
+                }
+
+                if (ExeSubStages[i].SubStage == 886){
+                    let sulfur = (await axios.get('/api/execalcparameters/?ExeSubStage='+ExeSubStages[i].id)).data
+                    vm.sulfur_value = sulfur[0].Value
+                    console.log(sulfur)
+                    console.log(vm.sulfur_value)
+                }
+
+                if (ExeSubStages[i].SubStage == 1031 || ExeSubStages[i].SubStage == 1032){
+                    let asphalt = (await axios.get('/api/execalcparameters/?ExeSubStage='+ExeSubStages[i].id)).data
+                    vm.asphalt_value = asphalt[0].Value
+                    console.log(asphalt)
+                    console.log(vm.asphalt_value)
+                }
+
+            }
+
+
+
+
+            //vm.density_value
+
+
+
             vm.plan_time.push(Duration*60)
-            //vm.fact_time.push(Runtime*60)
-            vm.fact_time.push(Duration*60*(Math.random()/10+0.95))
+            vm.fact_time.push(Runtime)
+            //vm.fact_time.push(Duration*60*(Math.random()/10+0.95))
+
+
+
+
+
         }
 
+        let deviation = 0.1
         for(var i = 0; i < this.plan_time.length; i++) {
-            if(this.plan_time[i] < this.fact_time[i]) {
+            if(this.plan_time[i] < this.fact_time[i]*(1-deviation) || this.plan_time[i] > this.fact_time[i]*(1+deviation)) {
                 this.flag.push(false);
             }
             else {
