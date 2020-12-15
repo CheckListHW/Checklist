@@ -342,6 +342,15 @@ p {
     background-color: #75c1ff;
 }
 
+.fact:hover {
+    cursor: pointer;
+}
+
+.fact:hover.disabled:hover {
+    cursor: pointer;
+    background-color: #878787;
+}
+
 .green {
     background-color: #10c169;
 }
@@ -358,6 +367,10 @@ p {
 .red:hover {
     background-color: #ff1f1f;
     cursor: pointer;
+}
+
+.disabled {
+    background-color: #949494;
 }
 
 /* Graphics ===============*/

@@ -37,7 +37,7 @@
                                 <h3>План</h3>
                             </div>
 
-                            <div class="plan cell" v-for="(time, index) in plan_time">
+                            <div v-bind:class="{cell: true, plan: true, disabled: time == 0}" v-for="(time, index) in plan_time">
                                 <pretty_time :value="time"></pretty_time>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                                 <h3>Факт</h3>
                             </div>
 
-                            <div v-bind:class="{cell: true, green: flag[index], red: !flag[index]}" v-for="(time, index) in fact_time" @mouseover="hover_on(index)" @mouseout="hover_off">
+                            <div v-bind:class="{cell: true, green: flag[index], red: !flag[index], disabled: time == 0}" v-for="(time, index) in fact_time" @mouseover="hover_on(index)" @mouseout="hover_off">
                                 <pretty_time :value="time"></pretty_time>
                             </div>
                         </div>
