@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../anim/animate.min.css">
+    <link rel="stylesheet" href="../icons/font-awesome-4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css/fractions_css.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <div>
+                    <nav class="nav">
+                        <a class="nav__link" href="#">Home</a>
+                        <a class="nav__link" href="#">About</a>
+                    </nav>
+                </div>
+
+                <div class="user">
+                    <a class="user_link">User Name</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etaps">
+            <div class="content">
+                <div class="title">
+                    <h1>Описание этапа №5 Пробы "{{prob_name}}"</h1>
+                </div>
+
+                <div class="short_information">
+                    <div class="sub_title">
+                        <h2>Краткое описание</h2>
+                        <hr>
+                    </div>
+
+                    <div class="info_list">
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>Температура начала кипения нефти</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{t0}} °С</h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>Доля фракции при 100°С</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{dolya100}} %</h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>Доля фракции при 200°С</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{dolya200}} %</h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>Доля фракции при 300°С</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{dolya300}} %</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time_etaps">
+                    <div class="sub_title">
+                        <h2>Продолжительность выполнения подэтапов</h2>
+                        <hr>
+                    </div>
+
+                    <div class="etaps_list" v-for="(array, index) in plan_times_arrays">
+                        <div class="row">
+                            <div class="null_row_title">
+
+                            </div>
+
+                            <div class="collumn_title" v-for="n in title_lens[index]">
+                                <h3>Шаг {{n + max_size * index}}</h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="row_title cell">
+                                <h3>План</h3>
+                            </div>
+
+                            <div class="plan cell" v-for="(time) in plan_times_arrays[index]">
+                                <pretty_time :value="time"></pretty_time>
+                            </div>
+                        </div>
+
+                        <div class="row" >
+                            <div class="row_title cell">
+                                <h3>Факт</h3>
+                            </div>
+
+                            <div v-bind:class="{cell: true, green: flags_arrays[index][number], red: !flags_arrays[index][number]}"
+                                 v-for="(time, number) in fact_times_arrays[index]"
+                                 @mouseover="hover_on(index, number)"
+                                 @mouseout="hover_off">
+                                <pretty_time :value="time"></pretty_time>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button" :style="{ height: block_height + 'px' }">
+                    <button class="btn btn-info">Назад</button>
+                </div>
+            </div>
+
+            <transition name="fade">
+                <div class="popup_window" v-if="hover">
+                    <div class="sub_title" id="popup_title">
+                        <h2>Шаг {{(hover_number + 1) + max_size * hover_index}}</h2>
+                    </div>
+
+                    <div class="main_part">
+                        <div class="block_title">
+                            <p>План: </p>
+                            <pretty_time :value="plan_times_arrays[hover_index][hover_number]"></pretty_time>
+                        </div>
+
+                        <div class="block" :style="{ width: width_first + 'px' }">
+
+                        </div>
+
+                        <div class="block_title">
+                            <p>Факт: </p>
+                            <pretty_time :value="fact_times_arrays[hover_index][hover_number]"></pretty_time>
+                        </div>
+
+                        <div class="block" :style="{ width: width_second + 'px' }">
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </div>
+
+
+    <script src="js/fractions_js.js"></script>
+</body>
+</html>
