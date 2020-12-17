@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from rest_framework.utils import json
 
-from lab.models import Samples, ExeExperiment, ExeStage, ExeSubStage
+from lab.models import Samples, ExeExperiment, ExeStage, ExeSubStage, ExeCalcParameter
 from .models import *
 from openpyxl import Workbook
 
@@ -62,7 +62,8 @@ def stages(request):
     data = {'Experiment': expid, 'expname': expname}
     return checkauth(request, 'Editor/Stages.html', data)
 
-def sqlite_to_xlsx():
+
+def sqlite_to_xlsx_runtime():
     wb = Workbook()
     ws = wb.active
     ws.title = "Worksheet Title"
@@ -81,8 +82,38 @@ def sqlite_to_xlsx():
     return
 
 
+def sqlite_to_xlsx_param():
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Worksheet Title"
+    column_list = ['Sample', 'Stage number', 'Stage name', 'SubStage number',
+                   'SubStage name', 'Parametr value', 'Parametr unit', 'Parametr name']
+    ws.append(column_list)
+    OutPutStages = [830, 868, 886, 1048, 914, 1036, 1032]
+    for sample in Samples.objects.all():
+        for exeExperiment in ExeExperiment.objects.filter(Samples=sample):
+            ws.append([sample.LabCode])
+            for exeStage in ExeStage.objects.filter(ExeExperiment=exeExperiment):
+                addStage = True
+                for OutPutStage in OutPutStages:
+                    for exeSubstage in ExeSubStage.objects.filter(ExeStage=exeStage, SubStage=OutPutStage, Check=True):
+                        if addStage:
+                            ws.append(['', exeStage.Number, exeStage.Name])
+                            addStage = False
+                        ws.append(['', '', '', exeSubstage.Number, exeSubstage.Name])
+                        for e_calc_param in ExeCalcParameter.objects.filter(ExeSubStage=exeSubstage):
+                            row = ['', '', '', '', '', e_calc_param.Value, e_calc_param.Unit, e_calc_param.ParameterName]
+                            ws.append(row)
+    wb.save("Parametr.xlsx")
+    return
+
+
+
+
+
 def Start(request):
-    #sqlite_to_xlsx()
+    #sqlite_to_xlsx_runtime()
+    sqlite_to_xlsx_param()
     user = request.user
     if request.method == 'POST' and user.is_authenticated == False:
         username = request.POST.get('username', '')
