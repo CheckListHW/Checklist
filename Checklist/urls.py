@@ -68,6 +68,11 @@ urlpatterns = [
     path('lab/check/crud/', LaoratorianViews.checkcrud),
     path('customer/samples/', CustomerViews.selectsample),
     path('customer/infosample/', CustomerViews.InfoSample),
+    path('customer/DensitySample/', CustomerViews.DensitySample),
+    path('customer/FractionsSample/', CustomerViews.FractionsSample),
+    path('customer/SulfurSample/', CustomerViews.SulfurSample),
+    path('customer/VelocitySample/', CustomerViews.VelocitySample),
+    path('customer/SubstageTimeSample/', CustomerViews.SubstageTimeSample),
     path('admin/', admin.site.urls),
 ]
 

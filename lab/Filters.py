@@ -105,11 +105,13 @@ class ExeStagesFilter(filters.FilterSet):
     Check = filters.BooleanFilter()
     Name = filters.CharFilter()
     ExeExperiment = filters.NumberFilter()
+    id = filters.NumberFilter()
+    Number = filters.NumberFilter()
     PreparatoryStage = filters.BooleanFilter()
 
     class Meta:
         model = ExeStage
-        fields = ['id', 'Check', 'Name', 'ExeExperiment', 'PreparatoryStage']
+        fields = ['id', 'Check', 'Name', 'Number', 'ExeExperiment', 'PreparatoryStage']
 
 
 class ExeStagesListView(viewsets.ModelViewSet):

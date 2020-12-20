@@ -1,0 +1,159 @@
+{% extends "Shared/Header.html" %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "Customer/css/DensitySample.css" %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+</head>
+{% verbatim %}
+<!-- Main Body -->
+    <div class="main_body">
+        <div class="wrapper" id="etaps">
+            <div class="content">
+                <div class="title">
+                    <h1>Описание этапа: №{{ stage_number }} {{ stage_name }}. Пробы "{{SampleName}}"</h1>
+                </div>
+                <div class="short_information">
+                    <div class="sub_title">
+                        <h2>Краткое описание</h2>
+                        <hr>
+                    </div>
+
+                    <div class="info_list">
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>Плотность была определена</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{device()}}</h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>Температура нефти в момент определения плотности</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{temperature}}°С</h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>Плотность нефти измеренная</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{density_value * 1000}} кг/м<sup style="font-size: 8px;">3</sup></h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>Плотность нефти приведенная к 20 °С</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{density_value_2 * 1000}} кг/м<sup style="font-size: 8px;">3</sup></h3>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <div class="info_title">
+                                <h3>Классификация нефти по плотности</h3>
+                            </div>
+
+                            <div class="info_value">
+                                <h3>{{density()}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time_etaps">
+                    <div class="sub_title">
+                        <h2>Продолжительность выполнения подэтапов</h2>
+                        <hr>
+                    </div>
+
+                    <div class="etaps_list" v-for="(array, index) in plan_times_arrays">
+                        <div class="row">
+                            <div class="null_row_title">
+
+                            </div>
+
+                            <div class="collumn_title" v-for="n in title_lens[index]">
+                                <h3>Шаг {{n}}</h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="row_title cell">
+                                <h3>План</h3>
+                            </div>
+
+                            <div class="plan cell" v-for="(time) in plan_times_arrays[index]">
+                                <pretty_time :value="time"></pretty_time>
+                            </div>
+                        </div>
+
+                        <div class="row" >
+                            <div class="row_title cell">
+                                <h3>Факт</h3>
+                            </div>
+
+                            <div v-bind:class="{cell: true, green: flags_arrays[index][number], red: !flags_arrays[index][number]}"
+                                 v-for="(time, number) in fact_times_arrays[index]"
+                                 @mouseover="hover_on(index, number)"
+                                 @mouseout="hover_off">
+                                <pretty_time :value="time"></pretty_time>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button" :style="{ height: block_height + 'px' }">
+                    <button class="btn btn-info" @click="back">Назад</button>
+                </div>
+            </div>
+
+            <transition name="fade">
+                <div class="popup_window" v-if="hover">
+                    <div class="sub_title" id="popup_title">
+                        <h2>Шаг {{(hover_number + 1) + max_size * hover_index}}</h2>
+                    </div>
+
+                    <div class="main_part">
+                        <div class="block_title">
+                            <p>План: </p>
+                            <pretty_time :value="plan_times_arrays[hover_index][hover_number]"></pretty_time>
+                        </div>
+
+                        <div class="block" :style="{ width: width_first + 'px' }">
+
+                        </div>
+
+                        <div class="block_title">
+                            <p>Факт: </p>
+                            <pretty_time :value="fact_times_arrays[hover_index][hover_number]"></pretty_time>
+                        </div>
+
+                        <div class="block" :style="{ width: width_second + 'px' }">
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </div>
+
+
+    {% endverbatim %}
+    {{ Sample|json_script:"Sample" }}
+    {{ SampleName|json_script:"SampleName" }}
+{% load static %}
+<script src="{% static "Customer/js/DensitySample.js" %} "></script>
+{% endblock %}

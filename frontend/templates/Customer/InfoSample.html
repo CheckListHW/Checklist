@@ -47,8 +47,8 @@
                                 <h3>Факт</h3>
                             </div>
 
-                            <div v-bind:class="{cell: true, green: flag[index], red: !flag[index], disabled: time == 0}" v-for="(time, index) in fact_time" @mouseover="hover_on(index)" @mouseout="hover_off">
-                                <pretty_time :value="time"></pretty_time>
+                            <div v-bind:class="{cell: true, green: flag[index], red: !flag[index], disabled: time == 0}" v-for="(time, index) in fact_time" @click="GoInfo(index)" @mouseover="hover_on(index)" @mouseout="hover_off">
+                                <pretty_time :value="time"  ></pretty_time>
                             </div>
                         </div>
                     </div>
@@ -63,17 +63,17 @@
                     <div class="graphics_list">
                         <div class="qraphic">
                             <canvas id="myChart"></canvas>
-                            <h3>Плотность в сравнениии с аналогами, кг/м<sup style="font-size: 8px;">3</sup></h3>
+                            <h3>Плотность в сравнениии с аналогами, кг/м<sup style="font-size: 8px;">3</sup>: {{ density_value }}</h3>
                         </div>
 
                         <div class="qraphic">
                             <canvas id="myChart1"></canvas>
-                            <h3>Вязкость в сравнениии с аналогами, мПа*с</h3>
+                            <h3>Вязкость в сравнениии с аналогами, мПа*с: {{ velocity_value }}</h3>
                         </div>
 
                         <div class="qraphic">
                             <canvas id="myChart2"></canvas>
-                            <h3>Содержание серы в сравнениии с аналогами, %</h3>
+                            <h3>Содержание серы в сравнениии с аналогами, %: {{ sulfur_value }}</h3>
                         </div>
                     </div>
                 </div>
