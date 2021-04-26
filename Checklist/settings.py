@@ -27,7 +27,7 @@ SECRET_KEY = '1v5_j&jj*sib@md+0ke4z$wpi40hbebjch+(8nar_0@yxsb$no'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'cheklist.ru.com', 'www.cheklist.ru.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'mytruestory.xyz', 'www.mytruestory.xyz']
 
 
 # Application definition
